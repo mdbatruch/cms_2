@@ -24,6 +24,7 @@
     <div class="actions">
       <a class="action" href="<?php echo url_for('/staff/subjects/new.php'); ?>">Create New Subject</a>
       <!-- <p><php echo $_SESSION['status']; ?></p> -->
+      <p><?php echo display_session_message(); ?></p>
     </div>
 
   	<table class="list">
@@ -53,8 +54,6 @@
     	  </tr>
       <?php } ?>
   	</table>
-
-    <p><?php echo display_session_message(); ?></p>
 
     <?php
       

@@ -6,7 +6,7 @@
     //turn on sessions
     session_start();
 
-    
+    date_default_timezone_set('America/Toronto');
 
     // __FILE__ returns the current path to this file
     // dirname() returns the path to the parent directory

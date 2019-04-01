@@ -8,6 +8,8 @@ require_once('../../private/initialize.php');
 // or you could use
 // $_SESSION['username'] = NULL;
 
+$_SESSION['logout_message'] = 'You have successfully logged out.';
+
 logout_admin();
 
 redirect_to(url_for('/staff/login.php'));

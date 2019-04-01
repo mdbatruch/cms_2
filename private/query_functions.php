@@ -413,42 +413,42 @@ ini_set('display_errors', 1);
         // echo json_encode($data);
     }
 
-    function insert_pages($pages) {
+//     function insert_pages($pages) {
         
-        global $db;
+//         global $db;
         
-        $errors = validate_page($pages);
+//         // $errors = validate_page($pages);
         
         
-        if (count($errors)>0) {
-            return $errors;
-        }
+//         // if (count($errors)>0) {
+//         //     return $errors;
+//         // }
 
-        shift_page_positions(0, $pages['position'], $pages['subject_id']);
+//         shift_page_positions(0, $pages['position'], $pages['subject_id']);
         
-        $sql = "INSERT INTO pages ";
-        $sql .= "(subject_id, menu_name, position, visible,"; 
-        $sql .= " content) ";
-        $sql .= "VALUES (";
-        $sql .= "'" . $pages['subject_id'] . "',";
-        $sql .= "'" . $pages['menu_name'] . "',";
-        $sql .= "'" . $pages['position'] . "',";
-        $sql .= "'" . $pages['visible'] . "',";
-        $sql .= "'" . $pages['content'] . "')";
+//         $sql = "INSERT INTO pages ";
+//         $sql .= "(subject_id, menu_name, position, visible,"; 
+//         $sql .= " content) ";
+//         $sql .= "VALUES (";
+//         $sql .= "'" . $pages['subject_id'] . "',";
+//         $sql .= "'" . $pages['page_name'] . "',";
+//         $sql .= "'" . $pages['position'] . "',";
+//         $sql .= "'" . $pages['visible'] . "',";
+//         $sql .= "'" . $pages['content'] . "')";
         
-        $result = mysqli_query($db, $sql);
+//         $result = mysqli_query($db, $sql);
      
-        if($result) {
-            return true;
+//         if($result) {
+//             return true;
 
-        } else {
-            echo mysqli_error($db);
-            db_disconnect($db);
-            exit;
-        }
+//         } else {
+//             echo mysqli_error($db);
+//             db_disconnect($db);
+//             exit;
+//         }
         
-//        return $result;
-    }
+// //        return $result;
+//     }
 
     function find_all_pages() {
         global $db;
@@ -554,13 +554,13 @@ ini_set('display_errors', 1);
 //            $errors[] = 'Choose a name that is not already taken';
 //        }
         
-       if (is_blank($pages['menu_name'])) {
+       if (empty($pages['menu_name'])) {
            $errors[] = 'You must include a menu name.';
        } elseif (!has_length($pages['menu_name'], ['min' => 7, 'max' => 255]) ){
            $errors[] = 'You must have more than 1 character';
        }
     
-        if (is_blank($pages['subject_id'])) {
+        if (empty($pages['subject_id'])) {
             $errors[] = 'Please add a subject Id';
         }
         

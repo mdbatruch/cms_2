@@ -8,6 +8,8 @@
     // $db = db_connect();
 
     require_login();
+
+    check_session();
     
     $page_title = 'Staff Menu';
 
@@ -29,6 +31,8 @@
     //     echo '<pre>';
     //     print_r($id_check);
 
+    // echo 'http://localhost:8888/cms_2/public/staff/index.php' . '<br/>';
+    // echo $_SERVER[PHP_SELF];
 ?>
 
         <div id="content">

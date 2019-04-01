@@ -10,16 +10,37 @@
     return true;
   }
 
+  function check_session() {
+
+    $timeout_duration = 1800;
+
+    if (isset($_SESSION['last_login']) && 
+                ($_SERVER['REQUEST_TIME'] - $_SESSION['last_login']) > $timeout_duration) {
+
+                  $_SESSION['username'] = null;
+                  $_SESSION['last_login'] = null;
+
+                  unset( $_SESSION['username'] );
+                  unset( $_SESSION['last_login'] );
+
+                  // session_unset();
+
+                  $_SESSION['logout_message'] = 'We\'re sorry, but your session has expired. Please login again.';
+
+                  redirect_to(url_for('/staff/login.php'));
+
+      }
+  }
+
   function is_logged_in() {
 
-    return isset($_SESSION['admin_id']);
+    // return isset($_SESSION['admin_id']);
+    return isset($_SESSION['username']);
   }
 
   function require_login() {
     if(!is_logged_in()) {
       redirect_to(url_for('/staff/login.php'));
-    } else {
-
     }
   }
 

@@ -180,6 +180,8 @@ switch($id){
 
     case 'new-page':
 
+        $pageid = $_POST['page_id'];
+
         if(empty($_POST['name'])) {
             $errors['name'] = "Page name can't be blank";
         }
@@ -210,7 +212,7 @@ switch($id){
 
             $id_count = mysqli_num_rows($page_check) + 1;
 
-            $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?id=' . $id_count . '&subject_id=' . $_POST['subject_id'];
+            $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?id=' . $pageid . '&subject_id=' . $_POST['subject_id'];
 
     
             shift_page_positions(0, $_POST['position'], $_POST['subject_id']);
@@ -263,6 +265,16 @@ switch($id){
             $errors['name'] = 'Page name can\'t be blank';
         }
 
+        $sql_page_check = "SELECT * from pages ";
+        $sql_page_check .= "WHERE menu_name='" . $_POST['name'] . "' ";
+        $sql_page_check .= "AND subject_id='" . $_POST['subject_id'] . "'";
+
+        $name_check = mysqli_query($db, $sql_page_check);
+        confirm_result_set($name_check);
+
+        if (mysqli_num_rows($name_check) > 0){
+            $errors['name'] = "This name already exists, please choose another one";
+        }
 
         if(!empty($errors)) {
             $data['success'] = false;

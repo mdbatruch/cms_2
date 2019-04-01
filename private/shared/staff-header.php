@@ -7,6 +7,10 @@
 //        error_reporting(E_ALL);
 
 //    $page = $_GET['page'];
+
+    if(isset($_SESSION['last_login'])) {
+        $readable_time = date('D-M-d-Y g:i A', $_SESSION['last_login']);
+    }
 ?>
 
 <!doctype html>
@@ -23,14 +27,16 @@
             <h1>Staff Area</h1>
         </header>
         
-        <nav>
-            <ul>
-               <li>
-                   User: <?php echo $_SESSION['username'] ?? ''; ?>
-               </li>
-                <li> <a href="<?php echo url_for('/staff/index.php'); ?>">Menu</a></li>
-                <li> <a href="<?php echo url_for('/staff/logout.php'); ?>">Logout</a></li>
+<?php if( is_logged_in() ) : ?>
+    <nav>
+        <ul>
+            <li>
+                Welcome back, <?php echo $_SESSION['username'] ?? ''; ?> <br/>
+                Last Login: <?php echo $readable_time; ?> <br/>
+            </li>
+            <li> <a href="<?php echo url_for('/staff/index.php'); ?>">Menu</a></li>
+            <li> <a href="<?php echo url_for('/staff/logout.php'); ?>">Logout</a></li>
 <!--                <li> <a href=""></a> Contact</li>-->
-            </ul>    
-        </nav>
-        
+        </ul>    
+    </nav>
+<?php endif; ?>

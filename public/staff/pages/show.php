@@ -13,6 +13,11 @@
 //    echo '</pre>';
 
     $page_title = 'Pages Show';
+
+
+    // $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?id=' .  . '&subject_id=' . '<br/>';
+    // echo dirname($_SERVER['HTTP_REFERER']) . '/show.php?id=' . '&subject_id=' . '<br/>';
+    // echo 'http://localhost:8888/cms_2/public/staff/pages/show.php?id=29&subject_id=1';
     
     include(SHARED_PATH . '/staff-header.php');
     

@@ -4,60 +4,29 @@
 
     require_login();
 
-if(is_post_request()){
-
-    $pages = [];
-    $pages['menu_name'] = $_POST['menu_name'] ?? '';
-    $pages['subject_id'] = $_POST['subject_id'] ?? '';
-    $pages['position'] = $_POST['position'] ?? '';
-    $pages['visible'] = $_POST['visible'] ?? '';
-    $pages['content'] = $_POST['content'] ?? '';
-
-    $result = insert_pages($pages);
-        
-    if ($result === true ) {
-        $new_id = mysqli_insert_id($db);
-        
-        $new_message = 'You have a created a new Page';
-    
-        $_SESSION['status'] = $new_message;
-        
-        redirect_to(url_for('staff/pages/show.php?id=' . $new_id));
-        
-    } else {
-        
-        $errors = $result;
-//        var_dump($errors);
-    }
-
-} else {
-
-    $pages = [];
-    $pages['menu_name'] = '';
-    $pages['subject_id'] = $_GET['subject_id'] ?? '1';
-    $pages['position'] = '';
-    $pages['visible'] = '';
-    $pages['content'] = '';
-
-}
     $id = $_GET['subject_id'];
+
 
     // $pages_set = find_all_pages();
     // $pages_count = mysqli_num_rows($pages_set) + 1;
     // mysqli_free_result($pages_set);
 
-    $pages_count = count_pages_by_subject_id($pages['subject_id']) + 1;
+    // $pages = [];
+    // $pages['menu_name'] = $_POST['menu_name'] ?? '';
+    // $pages['subject_id'] = $_POST['subject_id'] ?? '';
+    // $pages['position'] = $_POST['position'] ?? '';
+    // $pages['visible'] = $_POST['visible'] ?? '';
+    // $pages['content'] = $_POST['content'] ?? '';
 
-    // echo $pages_count;
+    $pages_count = count_pages_by_subject_id($id) + 1;
 
     $subject = [];
     $subject['position'] = $pages_count;
 
+    $page_title = "Create A New Page";
+    include(SHARED_PATH . '/staff-header.php'); 
+
 ?>
-
-
-<?php $page_title = "Create A New Page" ?>
-<?php include(SHARED_PATH . '/staff-header.php'); ?>
 
 
 <div id="content">
@@ -67,38 +36,24 @@ if(is_post_request()){
         </a>
     </div>
     
-    <div class="subject new">
-        <?php 
-            
-            if ($errors) {
-                echo display_errors($errors);
-            }
-            ?>
+    <div class="page new">
+        <div id="form-message"></div>
         <h1>Create a New Page</h1>
-        <form action="<?php echo url_for('/staff/pages/new.php?subject_id=' . $id); ?>" method="post">
+        <!-- <form action="<php echo url_for('/staff/pages/new.php?subject_id=' . $id); ?>" method="post"> -->
+        <form id="new-page" method="post">
             <dl>
-                <dt>Menu Name</dt>
+                <dt>Page Name</dt>
                 <dd>
-                    <input type="text" name="menu_name" value="" />
-                    <?php
-                        // if ($errors) {
-                        //     echo '<br/>';
-                        //     echo 'You entered "' . $_POST['menu_name'] . '" which is not valid!';
-                        // }
-                    ?>
+                    <!-- <input type="text" name="menu_name" value="" /> -->
+                    <input type="text" id="page-name" name="page_name" value="" />
+                    <div id="name-warning"></div>
                 </dd>
-                <input type="hidden" name="subject_id" value="<?php echo $id; ?>" />
+                <input type="hidden" id="subject-id" name="subject_id" value="<?php echo $id; ?>" />
             </dl>
-            <!-- <dl>
-                <dt>Subject ID</dt>
-                <dd>
-                    <input type="hidden" name="subject_id" value="<php echo $id; ?>" />
-                </dd>
-            </dl> -->
             <dl>
                 <dt>Position</dt>
                 <dd>
-                    <select name="position" id="">
+                    <select name="page_position" id="page-position">
                             <?php 
                                 for ($i=1; $i<=$pages_count; $i++){
                                     echo "<option value=\"{$i}\"";
@@ -114,17 +69,18 @@ if(is_post_request()){
             <dl>
                 <dt>Visible</dt>
                 <dd>
-                    <input type="hidden" name="visible" value="0" />
-                    <input type="checkbox" name="visible" value="1"/>
+                    <!-- <input type="hidden" name="visible" value="0" /> -->
+                    <input type="checkbox" id="page-visible" name="page_visible" value="1"/>
                 </dd>
             </dl>
             <dl>
                 <dt>Content</dt>
                 <dd>
-                    <textarea name="content" id="page-content" cols="30" rows="10" value=""></textarea>
+                    <textarea name="page_content" id="page-content" cols="30" rows="10" value=""></textarea>
                 </dd>
             </dl>
             <div id="operations">
+                <input type="hidden" id="page_id" name="page_id" value="<?php echo $pages_count; ?>">
                 <input type="submit" value="Create Page">
             </div>
         </form>

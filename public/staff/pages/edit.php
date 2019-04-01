@@ -10,47 +10,18 @@
     
     $id = $_GET['id'];
 
-    if(is_post_request()){
-        
-    // Handle form values sent by new.php
-        
-    $pages = [];
-    $pages['id'] = $id;
-    $pages['menu_name'] = $_POST['menu_name'] ?? '';
-    $pages['position'] = $_POST['position'] ?? '';
-    $pages['visible'] = $_POST['visible'] ?? '';
-    $pages['content'] = $_POST['content'] ?? '';
-    $pages['subject_id'] = $_POST['subject_id'] ?? '';
-        
-    $pages_list = update_page($pages);
-        
-    if ($pages_list === true ) {
-
-        $_SESSION['status'] = 'you have edited a page';
-
-        redirect_to(url_for('staff/pages/show.php?id=' . $id));
-    } else {
-        $errors = $pages_list;
-        
-//        var_dump($errors);
-    }
-        
-    } else {
-        $pages = find_all_pages_by_id($id);
-        
-        // $pages_set = find_all_pages();
-        // $pages_count = mysqli_num_rows($pages_set);
-        // mysqli_free_result($pages_set);
-
-        $pages_count = count_pages_by_subject_id($pages['subject_id']);
-    }
+    $pages = find_all_pages_by_id($id);
     
+    // $pages_set = find_all_pages();
+    // $pages_count = mysqli_num_rows($pages_set);
+    // mysqli_free_result($pages_set);
 
+    $pages_count = count_pages_by_subject_id($pages['subject_id']);
+
+    $page_title = "Edit Page";
+    
+    include(SHARED_PATH . '/staff-header.php'); 
 ?>
-
-
-<?php $page_title = "Edit Page" ?>
-<?php include(SHARED_PATH . '/staff-header.php'); ?>
 
 
 <div id="content">
@@ -63,20 +34,20 @@
     
     <div class="subject new">
         <h1>Edit Page</h1>
-        <?php
-            echo display_errors($errors);
-        ?>
-        <form action="<?php echo url_for('/staff/pages/edit.php?id=' . $id); ?>" method="post">
+        <div id="form-message"></div>
+        <!-- <form action="<php echo url_for('/staff/pages/edit.php?id=' . $id); ?>" method="post"> -->
+        <form id="edit-page" method="post">
             <dl>
                 <dt>Menu Name</dt>
                 <dd>
-                    <input type="text" name="menu_name" value="<?php echo $pages['menu_name'] ?>" />
+                    <input type="text" id="page-name" name="page_name" value="<?php echo $pages['menu_name'] ?>" />
+                    <div id="name-warning"></div>
                 </dd>
             </dl>
             <dl>
                 <dt>Position</dt>
                 <dd>
-                    <select name="position" id="">
+                    <select name="position" id="page-position">
                        <?php 
                         for ($i=1; $i<=$pages_count; $i++){
                         echo "<option value='{$i}'";
@@ -92,24 +63,23 @@
             <dl>
                 <dt>Subject ID</dt>
                 <dd>
-                    <input type="text" name="subject_id" value="<?php echo $pages['subject_id'] ?>" />
+                    <input type="text" id="subject-id" name="subject_id" value="<?php echo $pages['subject_id'] ?>" />
                 </dd>
             </dl>
             <dl>
                 <dt>Content</dt>
                 <dd>
-<!--                    <input type="text" name="content" value="<php echo $pages['content'] >" />-->
-                    <textarea name="content" id="" cols="30" rows="10"><?php echo $pages['content'] ?></textarea>
+                    <textarea name="content" id="page-content" cols="30" rows="10"><?php echo $pages['content'] ?></textarea>
                 </dd>
             </dl>
             <dl>
                 <dt>Visible</dt>
                 <dd>
-                    <input type="hidden" name="visible" value="0" />
-                    <input type="checkbox" name="visible" value="1" <?php if($pages['visible'] =="1") {echo " checked"; } ?>/>
+                    <input type="checkbox" id="page-visible" name="visible" value="1" <?php if($pages['visible'] =="1") {echo " checked"; } ?>/>
                 </dd>
             </dl>
             <div id="operations">
+                <input type="hidden" id="value" value="<?php echo $id; ?>" name="value_id">
                 <input type="submit" value="Edit Page">
             </div>
         </form>

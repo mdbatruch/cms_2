@@ -11,7 +11,7 @@
     $id = $_GET['id'];
 
     $pages = find_all_pages_by_id($id);
-    
+
     // $pages_set = find_all_pages();
     // $pages_count = mysqli_num_rows($pages_set);
     // mysqli_free_result($pages_set);

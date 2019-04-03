@@ -15,7 +15,10 @@
         <div id="content">
             <div id="main-menu">
                 <h2>Admin Main Menu</h2>
-                <p><?php echo display_session_message(); ?></p>
+                <!-- <p><php echo display_session_message(); ?></p> -->
+                <div id="form--message"><?php if (isset($_GET['status']) && $_GET['status'] == 'edited' ) {echo '<div class="alert alert-success">You have succesfully edited this Admin<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
+        else if (isset($_GET['status']) && $_GET['status'] == 'created' ){ echo '<div class="alert alert-success">You have succesfully created a new Admin<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
+        ?></div>
                 <div class="container">
                     <p><?php echo $admin_by_id['username']; ?></p>
                     <p><?php echo $admin_by_id['first_name']; ?></p>

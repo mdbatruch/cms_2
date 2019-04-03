@@ -25,11 +25,13 @@
 
                   // session_unset();
 
-                  $_SESSION['logout_message'] = 'We\'re sorry, but your session has expired. Please login again.';
+                  $_SESSION['logout_message'] = 'We\'re sorry, but you have timed out. Please login again.';
 
                   redirect_to(url_for('/staff/login.php'));
 
-      }
+      } else  {
+        $_SESSION["last_login"] = time(); // update last activity time stamp
+    }
   }
 
   function is_logged_in() {

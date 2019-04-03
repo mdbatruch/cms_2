@@ -8,6 +8,17 @@
     include(SHARED_PATH . '/staff-header.php');
   
     $admins_list = find_all_admins();
+
+
+    // $test = mysqli_fetch_all($admins_list);
+
+    // echo '<pre>';
+    // // print_r($test);
+
+    // foreach ($test as $key => $value) {
+    //     echo $value['3'];
+    //    }
+    
 ?>
 
         <div id="content">
@@ -15,6 +26,9 @@
                 <h2>Admin Main Menu</h2>
 
                 <p><?php echo display_session_message(); ?></p>
+                <div id="new-admin-link">
+                    <a href="<?php echo url_for('/staff/admin/new.php'); ?>">Create New</a>
+                </div>
 
                 <div class="container">
                 <?php while ($admin = mysqli_fetch_assoc($admins_list)) {  ?>
@@ -32,9 +46,6 @@
                     </p>
                 <?php  } ?>
                 </div>
-            </div>
-            <div id="new-admin">
-                <a href="<?php echo url_for('/staff/admin/new.php'); ?>">Create New</a>
             </div>
         </div>
 <?php

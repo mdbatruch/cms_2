@@ -222,6 +222,8 @@ $("#edit-subject").on("submit", function(e){
 
                 } else {
 
+                    // $('#form-message').html('<div class="alert alert-success">' + data.message + '</div>');
+
                     $(location).attr('href', data.redirect);
                     
                     console.log('Page has been successfully edited!');
@@ -302,6 +304,195 @@ $("#edit-subject").on("submit", function(e){
 
         // }
         });
+</script>
+<script type="text/javascript">
+        
+        $("#new-admin").on("submit", function(e){
+            e.preventDefault();
+    
+            console.log('admin account creation has been tried');
+                
+                // var formId = $('form').attr('id');
+                // var first_name = $("#name").val();
+                // var last_name = $("#lastname").val();
+                // var email = $("#email").val();
+                // var username = $("#username").val();
+                // var password = $("#password").val();
+                // var confirm_password = $("password-confirm").val();
+
+                var formData = {
+                    'id' : $('form').attr('id'),
+                    'first_name' : $("#firstname").val(),
+                    'last_name' : $("#lastname").val(),
+                    'email' : $("#email").val(),
+                    'username' : $("#username").val(),
+                    'password' : $("#password").val(),
+                    'password_confirm' : $("#password-confirm").val()
+                }
+    
+                $.ajax({
+                    type: "POST",
+                    url: "../../process.php",
+                    dataType: "json",
+                    data: formData,
+                    // data: {name:page_name, position:page_position, visible:page_hidden, subject_id:subject_id, content:page_content, id:formId, page_id:pageId},
+                }).done(function(data){
+    
+                if (!data.success) {
+    
+                        if (data.errors.name) {
+    
+                            $('#name-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.name + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        } else {
+                            $('#name-warning').html('');
+                        }
+
+                        if (data.errors.last_name) {
+
+                            $('#last-name-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.last_name + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        } else {
+                            $('#last-name-warning').html('');
+                        }
+
+                        if (data.errors.email) {
+                            
+                            $('#email-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.email + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        } else {
+                            $('#email-warning').html('');
+                        }
+
+                        if (data.errors.username) {
+                            
+                            $('#username-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.username + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        } else {
+                            $('#username-warning').html('');
+                        }
+
+                        if (data.errors.password) {
+                            
+                            $('#password-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.password + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        } else {
+                            $('#password-warning').html('');
+                        }
+
+                        if (data.errors.password_confirm) {
+                            
+                            $('#password-confirm-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.password_confirm + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        } else {
+                            $('#password-confirm-warning').html('');
+                        }
+                    
+                        $('#form-message').html('<div class="alert alert-danger">' + data.message + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    
+                        console.log('admin account did not submit!');
+    
+                    } else {
+    
+                        $(location).attr('href', data.redirect);
+                        
+                        console.log('Admin created!');
+    
+                        $('#form-message').html('<div class="alert alert-success">' + data.message + '</div>');
+                    }
+                
+            });
+    
+        });
+    </script>
+<script type="text/javascript">
+        
+    $("#edit-admin").on("submit", function(e){
+        e.preventDefault();
+
+        console.log('admin account update has been tried');
+            
+            // var formId = $('form').attr('id');
+            // var first_name = $("#name").val();
+            // var last_name = $("#lastname").val();
+            // var email = $("#email").val();
+            // var username = $("#username").val();
+            // var password = $("#password").val();
+            // var confirm_password = $("password-confirm").val();
+
+            var formData = {
+                'id' : $('form').attr('id'),
+                'current_id' : $("#current_id").val(),
+                'first_name' : $("#firstname").val(),
+                'last_name' : $("#lastname").val(),
+                'email' : $("#email").val(),
+                'username' : $("#username").val(),
+                'password' : $("#password").val(),
+                'password_confirm' : $("#password-confirm").val()
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "../../process.php",
+                dataType: "json",
+                data: formData,
+                // data: {name:page_name, position:page_position, visible:page_hidden, subject_id:subject_id, content:page_content, id:formId, page_id:pageId},
+            }).done(function(data){
+
+            if (!data.success) {
+
+                    if (data.errors.name) {
+
+                        $('#name-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.name + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    } else {
+                        $('#name-warning').html('');
+                    }
+
+                    if (data.errors.last_name) {
+
+                        $('#last-name-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.last_name + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    } else {
+                        $('#last-name-warning').html('');
+                    }
+
+                    if (data.errors.email) {
+                        
+                        $('#email-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.email + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    } else {
+                        $('#email-warning').html('');
+                    }
+
+                    if (data.errors.username) {
+                        
+                        $('#username-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.username + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    } else {
+                        $('#username-warning').html('');
+                    }
+
+                    if (data.errors.password) {
+                        
+                        $('#password-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.password + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    } else {
+                        $('#password-warning').html('');
+                    }
+
+                    if (data.errors.password_confirm) {
+                        
+                        $('#password-confirm-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.password_confirm + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                    } else {
+                        $('#password-confirm-warning').html('');
+                    }
+                
+                    $('#form-message').html('<div class="alert alert-danger">' + data.message + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                
+                    console.log('admin account did not submit!');
+
+                } else {
+
+                    $(location).attr('href', data.redirect);
+                    
+                    console.log('Admin created!');
+
+                    $('#form-message').html('<div class="alert alert-success">' + data.message + '</div>');
+                }
+            
+        });
+
+    });
 </script>
     </body>
 </html>

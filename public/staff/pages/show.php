@@ -6,6 +6,7 @@
     $id = $_GET['id'] ?? '1';
 
     $pages = find_all_pages_by_id($id);
+
     // $pages = find_all_pages();
 
 //    echo '<pre>';
@@ -37,8 +38,12 @@
     <p>Name: <?php echo $pages['menu_name']; ?></p>
     <p>Position: <?php echo $pages['position']; ?></p>
     <p>Content: <?php echo $pages['content']; ?></p>
+
+    <div id="form--message"><?php if (isset($_GET['status']) && $_GET['status'] == 'edited' ) {echo '<div class="alert alert-success">You have succesfully edited this page<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
+        else if (isset($_GET['status']) && $_GET['status'] == 'created' ){ echo '<div class="alert alert-success">You have succesfully created a new page<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
+        ?></div>
     
-    <?php echo display_session_message(); ?>
+    <!-- <php echo display_session_message(); ?> -->
 <!--    <p class="alert alert-success"><php echo $_SESSION['new_message'] ?? 'Not working!'; ?></p>-->
 <!--
         <a href="show.php?name=php echo u('Mike B'); ?>">Link</a><br />

@@ -18,6 +18,33 @@
 
     $pages_list = find_pages_by_subject_id($id);
 
+    // echo $_SESSION['last_login'];
+
+    // $test = find_pages_by_subject_id(2);
+
+    // $tester = mysqli_fetch_all($test);
+
+    // // echo '<pre>';
+    // // print_r($tester);
+
+    // foreach ($tester as $key => $value) {
+    //     // echo $value['0'] . '<br>';
+    //     $mike = $value['0'] + 1;
+    //     // return $mike;
+    // }
+
+    // echo $mike;
+
+    // $sql = "SELECT * FROM pages ";
+    // $sql .= "WHERE menu_name='" . 'Ajax 1' . "'";
+
+    // $test = mysqli_query($db, $sql);
+
+    // $tester = mysqli_fetch_assoc($test);
+
+    // echo '<pre>';
+    // print_r($tester);
+
 //        $sql = "SELECT * FROM subjects ";
 //        $sql .= "WHERE id='" . $id . "'";
 //        $result = mysqli_query($db, $sql);
@@ -31,6 +58,13 @@
 //    echo 'ID: ' . chars($id);
 //    echo '<br />';
 //    echo 'Position: ' . chars($position);
+
+// $pages_list = find_all_pages();
+
+// $page_check = mysqli_fetch_all($pages_list);
+
+// echo '<pre>';
+// print_r($page_check);
 
 include(SHARED_PATH . '/staff-header.php'); ?>
 
@@ -49,7 +83,9 @@ include(SHARED_PATH . '/staff-header.php'); ?>
     <div class="subject show">
         <!-- <h1>Subject ID: <php echo chars($id); ?></h1> -->
         <h1>Subject: <?php echo chars($subject['menu_name']); ?></h1>
-        <!-- <h1><php echo $_SESSION['status']; ?></h1> -->
+        <div id="form--message"><?php if (isset($_GET['status']) && $_GET['status'] == 'edited' ) {echo '<div class="alert alert-success">You have succesfully edited this subject<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
+        else if (isset($_GET['status']) && $_GET['status'] == 'new' ){ echo '<div class="alert alert-success">You have succesfully created a new subject<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
+        ?></div>
         <div class="attributes">
             <dl>
                 <dt>Menu Name</dt>
@@ -112,3 +148,7 @@ include(SHARED_PATH . '/staff-header.php'); ?>
         </div>
     </div>
 </div>
+
+<?php
+            include(SHARED_PATH . '/staff-footer.php');
+?>

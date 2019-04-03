@@ -6,6 +6,11 @@
 
     $pages_list = find_all_pages();
 
+    // $page_check = mysqli_fetch_all($pages_list);
+
+    // echo '<pre>';
+    // print_r($page_check);
+
 //    $pages = [
 //        ['id' => '1', 'page' => '1'],
 //        ['id' => '2', 'page' => '2'],

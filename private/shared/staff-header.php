@@ -3,14 +3,13 @@
         $page_title = 'Staff Area';
     }
 
-//        ini_set('display_errors', 1);
-//        error_reporting(E_ALL);
-
-//    $page = $_GET['page'];
-
     if(isset($_SESSION['last_login'])) {
         $readable_time = date('D-M-d-Y g:i A', $_SESSION['last_login']);
     }
+
+    check_session();
+
+    // echo $_SESSION['last_login'];
 ?>
 
 <!doctype html>

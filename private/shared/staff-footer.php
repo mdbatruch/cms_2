@@ -131,6 +131,7 @@ $("#edit-subject").on("submit", function(e){
             var page_name = $("#page-name").val();
             var page_position = $("#page-position").val();
             var subject_id = $("#subject-id").val();
+            var subject_name = $("#subject-name").val();
             var pageId = $("#page_id").val();
 
             if ( $('#page-visible').is(':checked') ) {
@@ -147,7 +148,7 @@ $("#edit-subject").on("submit", function(e){
                 type: "POST",
                 url: "../../process.php",
                 dataType: "json",
-                data: {name:page_name, position:page_position, visible:page_hidden, subject_id:subject_id, content:page_content, id:formId, page_id:pageId},
+                data: {name:page_name, position:page_position, visible:page_hidden, subject_id:subject_id, content:page_content, id:formId, page_id:pageId, subject_name:subject_name},
             }).done(function(data){
 
             if (!data.success) {

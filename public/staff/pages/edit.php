@@ -4,13 +4,16 @@
 
     require_login();
 
-    if(!$id = $_GET['id']) {
-        redirect_to(url_for('/staff/pages/index.php'));
-    }
-    
-    $id = $_GET['id'];
+    if(!$name = $_GET['page_name']) {
+            redirect_to(url_for('/staff/pages/index.php'));
+        }
 
-    $pages = find_all_pages_by_id($id);
+    // $pages = find_all_pages_by_id($id);
+    $pages = find_all_pages_by_name($name);
+
+    $subject_name = find_subject_by_id($pages['subject_id']);
+
+    $id = $pages['id'];
 
     // $pages_set = find_all_pages();
     // $pages_count = mysqli_num_rows($pages_set);
@@ -20,14 +23,14 @@
 
     $page_title = "Edit Page";
     
-    include(SHARED_PATH . '/staff-header.php'); 
+    include(SHARED_PATH . '/staff-header.php');
 ?>
 
 
 <div id="content">
 
 <div class="link-container">
-    <a class="back-link" href="<?php echo url_for('staff/subjects/show.php?id=' . chars($pages['subject_id'])); ?>">
+    <a class="back-link" href="<?php echo url_for('staff/subjects/show.php?subject=' . chars(u($subject_name['menu_name']))); ?>">
         Back to List
     </a>
 </div>
@@ -69,7 +72,7 @@
             <dl>
                 <dt>Content</dt>
                 <dd>
-                    <textarea name="content" id="page-content" cols="30" rows="10"><?php echo $pages['content'] ?></textarea>
+                    <textarea name="content" id="page-content" cols="30" rows="10"><?php echo chars($pages['content']) ?></textarea>
                 </dd>
             </dl>
             <dl>

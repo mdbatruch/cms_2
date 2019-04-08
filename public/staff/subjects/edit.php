@@ -4,9 +4,20 @@
 
     require_login();
 
-    if(!$id = $_GET['id']) {
+    // if(!$id = $_GET['id']) {
+    //     redirect_to(url_for('/staff/subjects/index.php'));
+    // }
+
+    if(!$subject = $_GET['subject']) {
         redirect_to(url_for('/staff/subjects/index.php'));
     }
+
+    $subject_array = find_subject_by_name($subject);
+
+    $subject_name = $subject_array['menu_name'];
+
+    // echo '<pre>';
+    // print_r($subject_array);
     
 //     if(is_post_request()){
 
@@ -29,14 +40,14 @@
 
 //     } else {
         
-        $subject = find_subject_by_id($id);
+        // $subject = find_subject_by_id($id);
 //     }
 
     $subject_set = find_all_subjects();
     $subject_count = mysqli_num_rows($subject_set);
     mysqli_free_result($subject_set);
 
-    $id = $_GET['id'];
+    // $id = $_GET['id'];
 
     $page_title = "Edit Subject";
     include(SHARED_PATH . '/staff-header.php'); 
@@ -56,7 +67,7 @@
             <dl>
                 <dt>Menu Name</dt>
                 <dd>
-                    <input type="text" id="subject_name" name="subject_name" value="<?php echo chars($subject['menu_name']); ?>" />
+                    <input type="text" id="subject_name" name="subject_name" value="<?php echo $subject_array['menu_name']; ?>" />
                     <div id="name-warning"></div>
                 </dd>
             </dl>
@@ -67,7 +78,7 @@
                         <?php
                           for($i=1; $i <= $subject_count; $i++) {
                             echo "<option value=\"{$i}\"";
-                            if($subject["position"] == $i) {
+                            if($subject_array["position"] == $i) {
                               echo " selected";
                             }
                             echo ">{$i}</option>";
@@ -80,12 +91,12 @@
                 <dt>Visible</dt>
                 <dd>
                     <!-- <input type="hidden" name="visible" value="0" /> -->
-                    <input type="checkbox" id="subject_hidden" name="visible" value="1" <?php if( $subject['visible'] == "1") {echo " checked"; } ?>/>
+                    <input type="checkbox" id="subject_hidden" name="visible" value="1" <?php if( $subject_array['visible'] == "1") {echo " checked"; } ?>/>
                     <!-- <input type="checkbox" id="page-visible" name="page_visible" value="1"/> -->
                 </dd>
             </dl>
             <div id="operations">
-            <input type="hidden" id="value" value="<?php echo $id; ?>" name="value_id">
+            <input type="hidden" id="value" value="<?php echo $subject_array['id']; ?>" name="value_id">
                 <input type="submit" value="Edit Subject">
             </div>
         </form>

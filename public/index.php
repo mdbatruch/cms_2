@@ -22,9 +22,9 @@
     $visible = !$preview;
 
 
-    if (isset($_GET['id'])) {
-        $page_id = $_GET['id'];
-        $page = find_all_pages_by_id($page_id, ['visible' => $visible]);
+    if (isset($_GET['menu_name'])) {
+        $page_name = $_GET['menu_name'];
+        $page = find_all_pages_by_name($page_name, ['visible' => $visible]);
         // $page = find_all_pages_by_id($page_id);
 
         

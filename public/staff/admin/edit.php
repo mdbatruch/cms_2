@@ -3,22 +3,34 @@
 
     require_login();
 
-    if(!$id = $_GET['id']) {
+    // if(!$id = $_GET['id']) {
+    //     redirect_to(url_for('/staff/pages/index.php'));
+    // }
+
+    if(!$username = $_GET['username']) {
         redirect_to(url_for('/staff/pages/index.php'));
     }
     
-    $id = $_GET['id'];
+    // $id = $_GET['id'];
+
+    // $esername = $_GET['username'];
 
     $page_title = 'Admin Edit';
 
-    $admin = find_admin_by_id($id);
+    // $admin = find_admin_by_id($id);
+    $admin = find_admin_by_username($username);
+
+    $id = $admin['id'];
+
+    // echo '<pre>';
+    // print_r($admin);
 
     include(SHARED_PATH . '/staff-header.php');
 ?>
 
         <div id="content">
             <div id="main-menu">
-                <h2>Update Admin <?php echo $id; ?></h2>
+                <h2>Update Admin <?php echo $username; ?></h2>
                 <p>Edit</p>
                 <div id="form-message"></div>
             <form id="edit-admin" method="post">

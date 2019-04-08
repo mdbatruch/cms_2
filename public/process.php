@@ -3,6 +3,7 @@
     require('../private/db_credentials.php');
     require('../private/database.php');
     require('../private/query_functions.php');
+    require('../private/functions.php');
 
     $db = db_connect();
 
@@ -25,7 +26,7 @@ switch($id){
         } else {
       
           $sql = "SELECT * FROM admins ";
-          $sql .= "WHERE username='" . $username . "'";
+          $sql .= "WHERE username='" . db_escape($db, $username) . "'";
       
           $result = mysqli_query($db, $sql);
           confirm_result_set($result);
@@ -91,7 +92,7 @@ switch($id){
             }
     
             $sql_check = "SELECT * FROM subjects ";
-            $sql_check .= "WHERE menu_name='" . $_POST['subject_name'] . "' ";
+            $sql_check .= "WHERE menu_name='" . db_escape($db, $_POST['subject_name']) . "' ";
     
             $duplicate_check = mysqli_query($db, $sql_check);
             confirm_result_set($duplicate_check);
@@ -117,9 +118,10 @@ switch($id){
             $sql .= ")";
     
             $result = mysqli_query($db, $sql);
+            confirm_result_set($result);
     
             $sql_id = "SELECT id FROM subjects ";
-            $sql_id .= "WHERE menu_name='" . $_POST['subject_name'] . "' ";
+            $sql_id .= "WHERE menu_name='" . db_escape($db, $_POST['subject_name']) . "' ";
             $sql_id .= "LIMIT 1";
     
             $result_check = mysqli_query($db, $sql_id);
@@ -130,7 +132,7 @@ switch($id){
             $data['success'] = true;
             $data['status'] = "new";
 
-            $redirect = dirname($_SERVER['HTTP_REFERER']) . '/show.php?id=' . $id_check['id'] . '&status=' . $data['status'];
+            $redirect = dirname($_SERVER['HTTP_REFERER']) . '/show.php?subject=' . chars(u($_POST['subject_name'])) . '&status=' . $data['status'];
     
             $data['message'] = 'You have created a Subject!';
             $data['redirect'] = $redirect;
@@ -177,7 +179,8 @@ switch($id){
             $data['success'] = true;
             $data['status'] = "edited";
 
-            $redirect = dirname($_SERVER['HTTP_REFERER']) . '/show.php?id=' . $sql_subject_pull['id'] . '&status=' . $data['status'];
+            // $redirect = dirname($_SERVER['HTTP_REFERER']) . '/show.php?id=' . $sql_subject_pull['id'] . '&status=' . $data['status'];
+            $redirect = dirname($_SERVER['HTTP_REFERER']) . '/show.php?subject=' . chars(u($sql_subject_pull['menu_name'])) . '&status=' . $data['status'];
             // $_SESSION['status'] = "You Have edited a subject";
             $data['message'] = 'You have successfully edited the subject';
             $data['redirect'] = $redirect;
@@ -210,8 +213,8 @@ switch($id){
         }
 
         $sql_page_check = "SELECT * from pages ";
-        $sql_page_check .= "WHERE menu_name='" . $_POST['name'] . "' ";
-        $sql_page_check .= "AND subject_id='" . $_POST['subject_id'] . "'";
+        $sql_page_check .= "WHERE menu_name='" . db_escape($db, $_POST['name']) . "' ";
+        $sql_page_check .= "AND subject_id='" . db_escape($db, $_POST['subject_id']) . "'";
 
         $name_check = mysqli_query($db, $sql_page_check);
         confirm_result_set($name_check);
@@ -255,9 +258,10 @@ switch($id){
             confirm_result_set($result);
 
             $id_find = "SELECT * FROM pages ";
-            $id_find .= "WHERE menu_name='" . $_POST['name'] . "'";
+            $id_find .= "WHERE menu_name='" . db_escape($db, $_POST['name']) . "'";
 
             $id_query = mysqli_query($db, $id_find);
+            confirm_result_set($id_query);
 
             $id_query_result = mysqli_fetch_assoc($id_query);
             
@@ -268,7 +272,7 @@ switch($id){
                 $data['success'] = true;
                 $data['status'] = 'created';
 
-                $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?subject_id=' . $_POST['subject_id'] . '&id=' . $id_query_result['id'] . '&status=' . $data['status'];
+                $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?page_name=' . chars(u($_POST['name'])) . '&subject=' . chars(u($_POST['subject_name'])) . '&status=' . $data['status'];
 
                 $data['message'] = 'Success! Your Page has been submitted!';
 
@@ -344,19 +348,20 @@ switch($id){
             $sql .= "LIMIT 1";
 
             $result = mysqli_query($db, $sql);
-            // confirm_result_set($result);
+            confirm_result_set($result);
 
-            if (!$result) {
-                echo mysqli_error($db);
-                db_disconnect($db);
-                exit;
-            }
+            // if (!$result) {
+            //     echo mysqli_error($db);
+            //     db_disconnect($db);
+            //     exit;
+            // }
 
             // find_page_by_id($pages['id']);
 
             $data['success'] = true;
             $data['status'] = 'edited';
-            $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?id=' . $pages['page_id'] . '&subject_id=' . $_POST['subject_id'] . '&status=' . $data['status'];
+            // $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?id=' . $pages['page_id'] . '&subject_id=' . $_POST['subject_id'] . '&status=' . $data['status'];
+            $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?page_name=' . chars(u($pages['page_name'])) . '&subject_id=' . chars(u($_POST['subject_id'])) . '&status=' . $data['status'];
 
             $data['message'] = 'This page has been successfully edited';
             $data['redirect'] = $page_path;
@@ -380,7 +385,7 @@ switch($id){
                 $errors['username'] = "Username cannot be blank";
             } else {
                 $sql = "SELECT * FROM admins ";
-                $sql .= "WHERE username='" . $_POST['username'] . "'";
+                $sql .= "WHERE username='" . db_escape($db, $_POST['username']) . "'";
             
                 $result = mysqli_query($db, $sql);
                 confirm_result_set($result);
@@ -396,7 +401,7 @@ switch($id){
                 $errors['email'] = "Must be in valid email format";
             } else {
                 $sql = "SELECT * FROM admins ";
-                $sql .= "WHERE email='" . $_POST['email'] . "'";
+                $sql .= "WHERE email='" . db_escape($db, $_POST['email']) . "'";
             
                 $result = mysqli_query($db, $sql);
                 confirm_result_set($result);
@@ -440,24 +445,27 @@ switch($id){
                 $sql .= "'" . db_escape($db, $hashed_password) . "')";
 
                 $admin_sql = mysqli_query($db, $sql);
+                confirm_result_set($admin_sql);
 
-                if (!$admin_sql) {
-                    echo mysqli_error($db);
-                    db_disconnect($db);
-                    exit;
-                }
+                // if (!$admin_sql) {
+                //     echo mysqli_error($db);
+                //     db_disconnect($db);
+                //     exit;
+                // }
 
                 $sql_id = "SELECT * FROM admins ";
-                $sql_id .= "WHERE email='" . $_POST['email'] . "'";
+                $sql_id .= "WHERE email='" . db_escape($db, $_POST['email']) . "'";
 
                 $sql_id_query = mysqli_query($db, $sql_id);
+                confirm_result_set($sql_id_query);
 
                 $id_array = mysqli_fetch_assoc($sql_id_query);
-                $current_id = $id_array['id'];
+                $current_username = $id_array['username'];
 
                 $data['success'] = true;
                 $data['status'] = 'created';
-                $admin_path = dirname(dirname($_SERVER['HTTP_REFERER'])) . '/admin/show.php?id=' . $current_id  . '&status=' . $data['status'];
+                // $admin_path = dirname(dirname($_SERVER['HTTP_REFERER'])) . '/admin/show.php?id=' . $current_id  . '&status=' . $data['status'];
+                $admin_path = dirname(dirname($_SERVER['HTTP_REFERER'])) . '/admin/show.php?username=' . chars(u($current_username))  . '&status=' . $data['status'];
 
                 $data['message'] = 'You have created a new admin';
                 $data['redirect'] = $admin_path;
@@ -588,17 +596,18 @@ switch($id){
                 $sql .= "LIMIT 1";
 
                 $admin_sql = mysqli_query($db, $sql);
-                // confirm_result_set($admin_sql);
+                confirm_result_set($admin_sql);
 
-                if (!$admin_sql) {
-                        echo mysqli_error($db);
-                        db_disconnect($db);
-                        exit;
-                    }
+                // if (!$admin_sql) {
+                //         echo mysqli_error($db);
+                //         db_disconnect($db);
+                //         exit;
+                //     }
                     
                 $data['status'] = 'edited';
                 $data['success'] = true;
-                $admin_path = dirname(dirname($_SERVER['HTTP_REFERER'])) . '/admin/show.php?id=' . $_POST['current_id'] . '&status=' . $data['status'];
+                // $admin_path = dirname(dirname($_SERVER['HTTP_REFERER'])) . '/admin/show.php?id=' . $_POST['current_id'] . '&status=' . $data['status'];
+                $admin_path = dirname(dirname($_SERVER['HTTP_REFERER'])) . '/admin/show.php?username=' . chars(u($_POST['username'])) . '&status=' . $data['status'];
 
                 $data['message'] = 'You have updated an admin';
                 $data['redirect'] = $admin_path;

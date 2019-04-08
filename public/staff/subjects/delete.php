@@ -4,10 +4,18 @@ require_once('../../../private/initialize.php');
 
 require_login();
 
-if(!isset($_GET['id'])) {
+// if(!isset($_GET['id'])) {
+//   redirect_to(url_for('/staff/subjects/index.php'));
+// }
+$id = $_GET['id'];
+
+if(!$subject = $_GET['subject']) {
   redirect_to(url_for('/staff/subjects/index.php'));
 }
-$id = $_GET['id'];
+
+$subject_array = find_subject_by_name($subject);
+
+$subject_name = $subject_array['menu_name'];
 
 
 if(is_post_request()) {
@@ -16,6 +24,7 @@ if(is_post_request()) {
     redirect_to(url_for('/staff/subjects/index.php'));
 } else {
     $subject = find_subject_by_id($id);
+    // $subject_array = find_subject_by_name($subject);
 }
 
 ?>
@@ -32,7 +41,7 @@ if(is_post_request()) {
     <p>Are you sure you want to delete this subject?</p>
     <p class="item"><?php echo chars($subject['menu_name']); ?></p>
 
-    <form action="<?php echo url_for('/staff/subjects/delete.php?id=' . chars(u($subject['id']))); ?>" method="post">
+    <form action="<?php echo url_for('/staff/subjects/delete.php?id=' . chars(u($id)) . '&subject=' . chars(u($subject_name))); ?>" method="post">
       <div id="operations">
         <input type="submit" name="commit" value="Delete Subject" />
       </div>

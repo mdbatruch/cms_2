@@ -18,7 +18,7 @@ ini_set('display_errors', 1);
         global $db;
 
         $sql = "SELECT * FROM admins ";
-        $sql .= "WHERE id='" . $id . "'";
+        $sql .= "WHERE id='" . db_escape($db, $id) . "'";
 
         $result = mysqli_query($db, $sql);
         confirm_result_set($result);
@@ -31,7 +31,7 @@ ini_set('display_errors', 1);
         global $db;
 
         $sql = "SELECT * FROM admins ";
-        $sql .= "WHERE username='" . $username . "'";
+        $sql .= "WHERE username='" . db_escape($db, $username) . "'";
 
         $result = mysqli_query($db, $sql);
         confirm_result_set($result);
@@ -44,7 +44,7 @@ ini_set('display_errors', 1);
         global $db;
 
         $sql = "DELETE FROM admins ";
-        $sql .= "WHERE id='" . $id . "'";
+        $sql .= "WHERE id='" . db_escape($db, $id) . "'";
         $sql .= "LIMIT 1";
         
 
@@ -278,6 +278,24 @@ ini_set('display_errors', 1);
         return $subject;
     }
 
+    function find_subject_by_name($name, $options=[]) {
+        
+        global $db;
+        
+        $visible = $options['visible'] ?? false;
+        
+        $sql = "SELECT * FROM subjects ";
+        $sql .= "WHERE menu_name='" . db_escape($db, $name) . "' ";
+        if($visible) {
+            $sql .= "AND visible = true ";
+        }
+        $result = mysqli_query($db, $sql);
+        confirm_result_set($result);
+        $subject = mysqli_fetch_assoc($result);
+        mysqli_free_result($result);
+        return $subject;
+    }
+
     function update_subject($subject) {
         
         global $db;
@@ -477,6 +495,24 @@ ini_set('display_errors', 1);
         mysqli_free_result($result);
         return $pages;
     }
+
+    function find_all_pages_by_name($menu_name, $options=[]){
+
+        global $db;
+            
+            $visible = $options['visible'] ?? false;
+            
+            $sql = "SELECT * FROM pages ";
+            $sql .= "WHERE menu_name='" . db_escape($db, $menu_name) . "' ";
+            if($visible) {
+                $sql .= "AND visible = true";
+            }
+            $result = mysqli_query($db, $sql);
+            confirm_result_set($result);
+            $pages = mysqli_fetch_assoc($result);
+            mysqli_free_result($result);
+            return $pages;
+        }
 
     function update_page($pages){
         

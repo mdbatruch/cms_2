@@ -36,10 +36,10 @@
                     <p><?php echo $admin['email']; ?></p>
                     <p><?php echo $admin['username']; ?></p>
                     <p>
-                    <a href="<?php echo url_for('staff/admin/show.php?id=' . $admin['id']); ?>"> View</a>
+                    <a href="<?php echo url_for('staff/admin/show.php?username=' . $admin['username']); ?>"> View</a>
                     </p>
                     <p>
-                    <a href="<?php echo url_for('staff/admin/edit.php?id=' . $admin['id']); ?>"> Edit</a>
+                    <a href="<?php echo url_for('staff/admin/edit.php?username=' . $admin['username']); ?>"> Edit</a>
                     </p>
                     <p>
                     <a href="<?php echo url_for('/staff/admin/delete.php?id='. $admin['id']); ?>">Delete</a>

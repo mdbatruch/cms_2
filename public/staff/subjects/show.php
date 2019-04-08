@@ -10,13 +10,44 @@
     //     $id = 1;
     // }
 
-    if(!$id = $_GET['id']) {
+    if (isset($_GET['subject'])) {
+        $subject = $_GET['subject'];
+    } else {
+        // $subject = 1;
         redirect_to(url_for('/staff/subjects/index.php'));
     }
 
-    $subject = find_subject_by_id($id);
+    // if(!$id = $_GET['id']) {
+    //     redirect_to(url_for('/staff/subjects/index.php'));
+    // }
 
-    $pages_list = find_pages_by_subject_id($id);
+    // if(!$subject = $_GET['subject']) {
+    //     redirect_to(url_for('/staff/subjects/index.php'));
+    // }
+
+    // $id = 1;
+
+    // $subject = find_subject_by_id($id);
+
+    // $pages_list = find_pages_by_subject_id($id);
+
+    // echo '<pre>';
+    
+    // print_r($subject);
+
+
+    $subject_array = find_subject_by_name($subject);
+
+    // echo '<pre>';
+    // print_r($subject_array);
+
+    $subject_id = $subject_array['id'];
+
+    $subject_pages = find_pages_by_subject_id($subject_id);
+
+    // echo '<pre>';
+
+    // print_r($pages_list);
 
     // echo $_SESSION['last_login'];
 
@@ -82,22 +113,22 @@ include(SHARED_PATH . '/staff-header.php'); ?>
     
     <div class="subject show">
         <!-- <h1>Subject ID: <php echo chars($id); ?></h1> -->
-        <h1>Subject: <?php echo chars($subject['menu_name']); ?></h1>
+        <h1>Subject: <?php echo chars($subject_array['menu_name']); ?></h1>
         <div id="form--message"><?php if (isset($_GET['status']) && $_GET['status'] == 'edited' ) {echo '<div class="alert alert-success">You have succesfully edited this subject<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
         else if (isset($_GET['status']) && $_GET['status'] == 'new' ){ echo '<div class="alert alert-success">You have succesfully created a new subject<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
         ?></div>
         <div class="attributes">
             <dl>
                 <dt>Menu Name</dt>
-                <dd><?php echo chars($subject['menu_name']); ?></dd>
+                <dd><?php echo chars($subject_array['menu_name']); ?></dd>
             </dl>
             <dl>
                 <dt>Position</dt>
-                <dd><?php echo chars($subject['position']); ?></dd>
+                <dd><?php echo chars($subject_array['position']); ?></dd>
             </dl>
             <dl>
                 <dt>Visible</dt>
-                <dd><?php echo $subject['visible'] == '1' ? 'true' : 'false'; ?></dd>
+                <dd><?php echo $subject_array['visible'] == '1' ? 'true' : 'false'; ?></dd>
             </dl>
         </div>
         <p><?php echo display_session_message(); ?></p>
@@ -108,7 +139,7 @@ include(SHARED_PATH . '/staff-header.php'); ?>
             <p class="pages listing">
             <h2>Pages</h2>
             <p><?php echo display_session_message(); ?></p>
-            <a href="<?php echo url_for('/staff/pages/new.php?subject_id=' . $subject['id']); ?>">Create a New Page</a>
+            <a href="<?php echo url_for('/staff/pages/new.php?subject=' . chars(u($subject_array['menu_name']))); ?>">Create a New Page</a>
         </p>
             <div class="actions">
             <table class="list">
@@ -119,7 +150,7 @@ include(SHARED_PATH . '/staff-header.php'); ?>
                 <td>Content</td>
                 <td colspan="3"></td>
             </tr>
-            <?php while($pages = mysqli_fetch_assoc($pages_list)) { ?>
+            <?php while($pages = mysqli_fetch_assoc($subject_pages)) { ?>
                 <tr>
                     <td><?php echo $pages['id']; ?></td>
                     <td>
@@ -132,10 +163,10 @@ include(SHARED_PATH . '/staff-header.php'); ?>
                         <span><?php echo $pages['content']; ?></span>
                     </td>
                     <td>
-                        <a href="<?php echo url_for('staff/pages/show.php?id=' . $pages['id'] . '&subject_id=' . $pages['subject_id']); ?>">View</a>
+                        <a href="<?php echo url_for('staff/pages/show.php?page_name=' . chars(u($pages['menu_name'])) . '&subject_id=' . $pages['subject_id']); ?>">View</a>
                     </td>
                     <td>
-                        <a href="<?php echo url_for('/staff/pages/edit.php?id='. $pages['id']); ?>">Edit</a>
+                        <a href="<?php echo url_for('/staff/pages/edit.php?page_name='. chars(u($pages['menu_name'])) . '&subject_id=' . $pages['subject_id']); ?>">Edit</a>
                     </td>
                     <td>
                         <a href="<?php echo url_for('/staff/pages/delete.php?id='. $pages['id']); ?>">Delete</a>
@@ -143,7 +174,7 @@ include(SHARED_PATH . '/staff-header.php'); ?>
                 </tr>
             <?php } ?>
             </table>
-            <?php mysqli_free_result($pages_list); ?>
+            <?php mysqli_free_result($subject_pages); ?>
             </div>
         </div>
     </div>

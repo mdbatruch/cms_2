@@ -4,11 +4,15 @@
 
     require_login();
 
-    $id = $_GET['subject_id'];
+    $subject = $_GET['subject'];
 
+    $subject_array = find_subject_by_name($subject);
 
-    // $pages_set = find_all_pages();
-    // $pages_count = mysqli_num_rows($pages_set) + 1;
+    // echo '<pre>';
+    // print_r($subject_array);
+
+    $pages_set = find_all_pages();
+    $pages_count = mysqli_num_rows($pages_set) + 1;
     // mysqli_free_result($pages_set);
 
     // $pages = [];
@@ -18,7 +22,7 @@
     // $pages['visible'] = $_POST['visible'] ?? '';
     // $pages['content'] = $_POST['content'] ?? '';
 
-    $pages_count = count_pages_by_subject_id($id) + 1;
+    // $pages_count = count_pages_by_subject_id($id) + 1;
 
     $subject = [];
     $subject['position'] = $pages_count;
@@ -31,7 +35,7 @@
 
 <div id="content">
     <div class="link-container">
-        <a class="back-link" href="<?php echo url_for('staff/subjects/show.php?id=' . $id); ?>">
+        <a class="back-link" href="<?php echo url_for('staff/subjects/show.php?subject=' . chars(u($subject_array['menu_name']))); ?>">
             Back to List
         </a>
     </div>
@@ -48,7 +52,8 @@
                     <input type="text" id="page-name" name="page_name" value="" />
                     <div id="name-warning"></div>
                 </dd>
-                <input type="hidden" id="subject-id" name="subject_id" value="<?php echo $id; ?>" />
+                <input type="hidden" id="subject-name" name="subject_name" value="<?php echo $subject_array['menu_name']; ?>" />
+                <input type="hidden" id="subject-id" name="subject_id" value="<?php echo $subject_array['id']; ?>" />
             </dl>
             <dl>
                 <dt>Position</dt>

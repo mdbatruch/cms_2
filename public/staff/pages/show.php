@@ -5,12 +5,21 @@
 
     $id = $_GET['id'] ?? '1';
 
-    $pages = find_all_pages_by_id($id);
+    // $pages = find_all_pages_by_id($id);
+
+    $menu_name = chars($_GET['page_name']);
+
+    $names = find_all_pages_by_name($menu_name);
+
+    $parent = find_subject_by_id($names['subject_id']);
+
+    $subject_parent = $parent['menu_name'];
 
     // $pages = find_all_pages();
 
 //    echo '<pre>';
-//    print_r($pages);
+//    print_r($subject_parent);
+//    print_r($names);
 //    echo '</pre>';
 
     $page_title = 'Pages Show';
@@ -28,16 +37,18 @@
 <div id="content">
 
 <div class="link-container">
-    <a class="back-link" href="<?php echo url_for('staff/subjects/show.php?id=' . chars($pages['subject_id'])); ?>">
+    <a class="back-link" href="<?php echo url_for('staff/subjects/show.php?subject=' . chars(u($subject_parent))); ?>">
         Back to List
     </a>
 </div>
+<!-- <script>alert('fuck');</script> -->
+<!-- <php echo $menu_name; ?> -->
 <!-- <h1><php echo $_SESSION['status']; ?></h1> -->
-    <p>Page ID: <?php echo $pages['id']; ?></p>
-    <p>Subject: <?php echo $pages['subject_id']; ?></p>
-    <p>Name: <?php echo $pages['menu_name']; ?></p>
-    <p>Position: <?php echo $pages['position']; ?></p>
-    <p>Content: <?php echo $pages['content']; ?></p>
+    <p>Page ID: <?php echo $names['id']; ?></p>
+    <p>Subject: <?php echo $names['subject_id']; ?></p>
+    <p>Name: <?php echo $names['menu_name']; ?></p>
+    <p>Position: <?php echo $names['position']; ?></p>
+    <p>Content: <?php echo $names['content']; ?></p>
 
     <div id="form--message"><?php if (isset($_GET['status']) && $_GET['status'] == 'edited' ) {echo '<div class="alert alert-success">You have succesfully edited this page<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
         else if (isset($_GET['status']) && $_GET['status'] == 'created' ){ echo '<div class="alert alert-success">You have succesfully created a new page<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';}
@@ -52,7 +63,7 @@
         
 -->
     <p>
-        <a href="<?php echo url_for('index.php?id=' . $pages['id'] . '&preview=true'); ?>" target="_blank">Preview Page</a>
+        <a href="<?php echo url_for('index.php?menu_name=' . chars(u($names['menu_name'])) . '&preview=true'); ?>" target="_blank">Preview Page</a>
     </p>
     <p>
         <a href="<?php echo url_for('/staff/index.php'); ?>">Back to Staff Page</a>

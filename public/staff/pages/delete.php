@@ -11,6 +11,10 @@
 
     $pages = find_all_pages_by_id($id);
 
+    $subjects = find_subject_by_id($pages['subject_id']);
+
+    // $subject_name = $subjects['menu_name'];
+
     if (is_post_request()) {
         $result = delete_page($id);
 
@@ -27,7 +31,7 @@
 <div id="content">
 
 <div class="link-container">
-    <a class="back-link" href="<?php echo url_for('staff/subjects/show.php?id=' . chars($pages['subject_id'])); ?>">
+    <a class="back-link" href="<?php echo url_for('staff/subjects/show.php?subject=' . chars(u($subjects['menu_name']))); ?>">
         Back to List
     </a>
 </div>

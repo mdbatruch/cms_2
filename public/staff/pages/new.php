@@ -15,12 +15,6 @@
     $pages_count = mysqli_num_rows($pages_set) + 1;
     // mysqli_free_result($pages_set);
 
-    // $pages = [];
-    // $pages['menu_name'] = $_POST['menu_name'] ?? '';
-    // $pages['subject_id'] = $_POST['subject_id'] ?? '';
-    // $pages['position'] = $_POST['position'] ?? '';
-    // $pages['visible'] = $_POST['visible'] ?? '';
-    // $pages['content'] = $_POST['content'] ?? '';
 
     // $pages_count = count_pages_by_subject_id($id) + 1;
 

@@ -4,7 +4,7 @@
 
     require_login();
 
-    if(!$name = $_GET['page_name']) {
+    if(!$name = $_GET['page']) {
             redirect_to(url_for('/staff/pages/index.php'));
         }
 
@@ -14,6 +14,11 @@
     $subject_name = find_subject_by_id($pages['subject_id']);
 
     $id = $pages['id'];
+
+    $subject = $subject_name['menu_name'];
+    
+    // echo '<pre>';
+    // print_r($subject_name);
 
     // $pages_set = find_all_pages();
     // $pages_count = mysqli_num_rows($pages_set);
@@ -83,6 +88,7 @@
             </dl>
             <div id="operations">
                 <input type="hidden" id="value" value="<?php echo $id; ?>" name="value_id">
+                <input type="hidden" id="subject-name" value="<?php echo $subject; ?>" name="subject_name">
                 <input type="submit" value="Edit Page">
             </div>
         </form>

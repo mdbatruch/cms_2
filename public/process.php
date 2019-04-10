@@ -5,6 +5,8 @@
     require('../private/query_functions.php');
     require('../private/functions.php');
 
+    date_default_timezone_set('America/Toronto');
+
     $db = db_connect();
 
     $data = [];
@@ -78,6 +80,17 @@ switch($id){
 
           $_SESSION['username'] = $username;
           $_SESSION['last_login'] = time();
+
+          $login_time = date('D-M-d-Y g:i A', $_SESSION['last_login']);
+
+
+          $sql = "INSERT INTO login_track ";
+          $sql .= "(username, date) VALUES (";
+          $sql .= "'" . db_escape($db, $username) . "',";
+          $sql .= "'" . db_escape($db, $login_time) . "')";
+
+          $result = mysqli_query($db, $sql);
+          confirm_result_set($result);
       
         }
       
@@ -272,7 +285,8 @@ switch($id){
                 $data['success'] = true;
                 $data['status'] = 'created';
 
-                $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?page_name=' . chars(u($_POST['name'])) . '&subject=' . chars(u($_POST['subject_name'])) . '&status=' . $data['status'];
+                // $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?page=' . chars(u($_POST['name'])) . '&subject=' . chars(u($_POST['subject_name'])) . '&status=' . $data['status'];
+                $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?subject=' . chars(u($_POST['subject_name'])) . '&page=' . chars(u($_POST['name'])) . '&status=' . $data['status'];
 
                 $data['message'] = 'Success! Your Page has been submitted!';
 
@@ -361,7 +375,8 @@ switch($id){
             $data['success'] = true;
             $data['status'] = 'edited';
             // $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?id=' . $pages['page_id'] . '&subject_id=' . $_POST['subject_id'] . '&status=' . $data['status'];
-            $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?page_name=' . chars(u($pages['page_name'])) . '&subject_id=' . chars(u($_POST['subject_id'])) . '&status=' . $data['status'];
+            // $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?page=' . chars(u($pages['page_name'])) . '&subject=' . chars(u($_POST['subject_name'])) . '&status=' . $data['status'];
+            $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php&subject=' . chars(u($_POST['subject_name'])) . '&page=' . chars(u($pages['page_name'])) .  '&status=' . $data['status'];
 
             $data['message'] = 'This page has been successfully edited';
             $data['redirect'] = $page_path;

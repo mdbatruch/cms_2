@@ -7,7 +7,7 @@
 
     // $pages = find_all_pages_by_id($id);
 
-    $menu_name = chars($_GET['page_name']);
+    $menu_name = chars($_GET['page']);
 
     $names = find_all_pages_by_name($menu_name);
 
@@ -63,7 +63,8 @@
         
 -->
     <p>
-        <a href="<?php echo url_for('index.php?menu_name=' . chars(u($names['menu_name'])) . '&preview=true'); ?>" target="_blank">Preview Page</a>
+        <!-- <a href="<php echo url_for('index.php?page=' . chars(u($names['menu_name'])) . '&preview=true'); ?>" target="_blank">Preview Page</a> -->
+        <a href="<?php echo url_for('index.php?subject=' . chars(u($parent['menu_name'])) . '&page=' . chars(u($names['menu_name'])) . '&preview=true'); ?>" target="_blank">Preview Page</a>
     </p>
     <p>
         <a href="<?php echo url_for('/staff/index.php'); ?>">Back to Staff Page</a>

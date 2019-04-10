@@ -81,15 +81,16 @@ ini_set('display_errors', 1);
         $sql .= "'" . db_escape($db, $hashed_password) . "')";
 
         $result = mysqli_query($db, $sql);
+        confirm_result_set($result);
 
-        if ($result) {
-            // redirect_to(url_for('/staff/admin/index.php'));
-            return true;
-        } else {
-            echo mysqli_error($db);
-            db_disconnect($db);
-            exit;
-        }
+        // if ($result) {
+        //     // redirect_to(url_for('/staff/admin/index.php'));
+        //     return true;
+        // } else {
+        //     echo mysqli_error($db);
+        //     db_disconnect($db);
+        //     exit;
+        // }
     }
 
     function update_admin($admin) {
@@ -371,6 +372,24 @@ ini_set('display_errors', 1);
     function delete_subject($id) {
     
     global $db;
+
+    $sql = "SELECT * FROM pages ";
+    $sql .= "WHERE subject_id='" . db_escape($db, $id) . "'";
+
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+
+    while ($test = mysqli_fetch_assoc($result)) {
+        // echo '<pre>';
+        // print_r($test);
+
+        $sql = "DELETE from pages ";
+        $sql .= "WHERE id='" . db_escape($db, $test['id']) . "'";
+
+        $delete_result = mysqli_query($db, $sql);
+        confirm_result_set($delete_result);
+
+    }
         
     $sql = "DELETE FROM subjects ";
     $sql .= "WHERE id='" . db_escape($db, $id) . "'";
@@ -616,7 +635,7 @@ ini_set('display_errors', 1);
 
     function has_unique_page_menu_name($menu_name, $current_id="0") {
         
-        global $db;
+    global $db;
         
         $sql = "SELECT * FROM pages ";
         $sql .= "WHERE menu_name='" . db_escape($db, $menu_name) . "' ";
@@ -626,7 +645,7 @@ ini_set('display_errors', 1);
         $page_count = mysqli_num_rows($pages_set);
         mysqli_free_result($pages_set);
         
-        return $page_count === 0;
+    return $page_count === 0;
         
     }
 
@@ -648,6 +667,25 @@ ini_set('display_errors', 1);
     return $result;
         
     }
+
+    function find_pages_by_subject_name($subject_name, $options=[]){
+
+        global $db;
+            
+            $visible = $options['visible'] ?? false;
+            
+            $sql = "SELECT * FROM pages ";
+            $sql .= "WHERE menu_name='" . db_escape($db, $subject_name) . "'";
+            if($visible) {
+                $sql .= "AND visible = true ";
+            }
+            $sql .= "ORDER BY position ASC";
+            $result = mysqli_query($db, $sql);
+            confirm_result_set($result);
+            
+        return $result;
+            
+        }
 
     function count_pages_by_subject_id($subject_id, $options=[]){
 
@@ -754,6 +792,20 @@ ini_set('display_errors', 1);
             db_disconnect($db);
             exit;
         }
+    }
+
+    function get_last_login($username) {
+        global $db;
+
+        $sql = "SELECT * FROM login_track ";
+        $sql .= "WHERE username='" . $username . "'";
+        $sql .= "ORDER BY id DESC ";
+        $sql .= "LIMIT 1";
+
+        $result = mysqli_query($db, $sql);
+        confirm_result_set($result);
+
+        return $result;
     }
 
     // function shift_subject_positions($start_pos, $end_pos, $current_id=0) {

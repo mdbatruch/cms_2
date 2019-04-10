@@ -9,7 +9,20 @@
 
     check_session();
 
-    // echo $_SESSION['last_login'];
+    if( is_logged_in() ) {
+
+    $time = get_last_login($_SESSION['username']);
+
+    // $test = mysqli_fetch_array($time);
+
+    // echo '<pre>';
+    // print_r($time);
+
+    $time_info = mysqli_fetch_assoc($time);
+
+    $latest_login = $time_info['date'];
+
+    }
 ?>
 
 <!doctype html>
@@ -31,7 +44,7 @@
         <ul>
             <li>
                 Welcome back, <?php echo $_SESSION['username'] ?? ''; ?> <br/>
-                Last Login: <?php echo $readable_time; ?> <br/>
+                You Logged in at: <?php echo $latest_login; ?> <br/>
             </li>
             <li> <a href="<?php echo url_for('/staff/index.php'); ?>">Menu</a></li>
             <li> <a href="<?php echo url_for('/staff/logout.php'); ?>">Logout</a></li>

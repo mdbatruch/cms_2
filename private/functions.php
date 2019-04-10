@@ -70,7 +70,7 @@ function get_and_clear_session_message() {
 function display_session_message() {
     $msg = get_and_clear_session_message();
     if(!is_blank($msg)) {
-        return '<p class="alert alert-success">' . chars($msg) . '</p>';
+        return '<div class="alert alert-success">' . chars($msg) . '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
     }
 }
 

@@ -4,78 +4,18 @@
 
     require_login();
 
-//   if(is_post_request()){
+    $subject_set = find_all_subjects();
+    $subject_count = mysqli_num_rows($subject_set) + 1;
+    mysqli_free_result($subject_set);
+    
+    $subject = [];
+    $subject['position'] = $subject_count;
 
-    // Handle form values sent by new.php
+    $page_title = "Create Subject";
+    
+    include(SHARED_PATH . '/staff-header.php');
 
-        // $subject = [];
-        // $subject['subject_name'] = $_POST['menu_name'] ?? '';
-        // $subject['position'] = $_POST['position'] ?? '';
-        // $subject['visible'] = $_POST['visible'] ?? '';
-
-        // $errors = [];
-        // $data = [];
-        
-        // if(is_blank($subject['subject_name'])) {
-        //     $errors['subject_name'] = "Name can't be blank";
-        // } elseif(!has_length($subject['subject_name'], ['min' => 2, 'max' => 255])) {
-        //     $errors['subject_name'] = "Name must be between 2 and 255 characters";
-        // }
-
-        // if(!empty($errors)) {
-        //     $data['success'] = false;
-        //     $data['errors'] = $errors;
-        //     $data['message'] = 'There was an error with your submission';
-        // } else {
-
-        // shift_subject_positions(0, $subject['position']);
-        
-        // $sql = "INSERT INTO subjects ";
-        // $sql .= "(menu_name, position, visible) ";
-        // $sql .= "VALUES (";    
-        // $sql .= "'" . db_escape($db, $subject['subject_name']) . "',";
-        // $sql .= "'" . db_escape($db, $subject['position']) . "',";
-        // $sql .= "'" . db_escape($db, $subject['visible']) . "'";
-        // $sql .= ")";
-
-        // $result = mysqli_query($db, $sql);
-
-        // if($result) {
-        //     return true;
-        // } else {
-        //     //if failed
-        //     echo mysqli_error($db);
-        //     db_disconnect($db);
-        //     exit;
-        //     }
-        // }
-
-        // // return $errors;
-
-        // echo json_encode($data);
-
-
-
-//         if ($result === true) {
-//             $new_id = mysqli_insert_id($db);
-//             $_SESSION['status'] = 'you have created a new subject';
-//             redirect_to(url_for('/staff/subjects/show.php?id=' . $new_id));
-//         } else {
-//             $errors = $result;
-// //            var_dump($errors);
-//         }
-    // }
-
-        $subject_set = find_all_subjects();
-        $subject_count = mysqli_num_rows($subject_set) + 1;
-        mysqli_free_result($subject_set);
-        
-        $subject = [];
-        $subject['position'] = $subject_count;
-
-        $page_title = "Create Subject";
-        
-        include(SHARED_PATH . '/staff-header.php'); ?>
+?>
 
 
 <div id="content">
@@ -85,9 +25,6 @@
     
     <div class="subject new">
         <h1>Create Subject</h1>
-        <!-- <php 
-            // echo display_errors($errors);
-        ?> -->
         <div id="form-message"></div>
         <!-- <form id="new-subject" action="<php echo url_for('/staff/subjects/new.php'); ?>" method="post"> -->
         <form id="new-subject" method="post">

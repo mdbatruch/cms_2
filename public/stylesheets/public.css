@@ -28,7 +28,7 @@ header {
   margin: 0;
   padding: 0;
   text-align: left;
-  background: #e03e52;
+  background: #000;
   color: #FFFFFF;
 }
 
@@ -56,7 +56,6 @@ footer {
   color: #FFFFFF;
 }
 
-
 /* Navigation */
 
 navigation {
@@ -67,7 +66,7 @@ navigation {
 }
 
 navigation a {
-  color: #FFFFFF;
+  color: #000;
   text-decoration: none;
 }
 
@@ -78,11 +77,11 @@ navigation a:hover {
 
 a {
   color: #E03E52;
-  text-decoration: none
+  text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline
+  text-decoration: underline;
 }
 
 ul.subjects {
@@ -112,7 +111,6 @@ navigation li {
   font-size: 16px;
   line-height: 1.5em;
 }
-
 
 /* Page Content */
 
@@ -145,16 +143,17 @@ navigation li {
   line-height: normal;
 }
 
-#page p {
-  font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif" font-size: 12px;
-  color: #000000;
-  padding: 0px;
-  line-height: normal;
-}
-
 #page h3 {
   font-size: 14px;
   color: #e03e52;
+}
+
+#page p {
+  font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif";
+  font-size: 12px;
+  color: #000000;
+  padding: 0px;
+  line-height: normal;
 }
 
 #content {
@@ -199,9 +198,11 @@ a.learnmore {
   color: #E03E52;
   font-size: 14px;
   font-weight: bold;
-  text-decoration: none
+  text-decoration: none;
 }
 
 a.learnmore:hover {
-  text-decoration: underline
+  text-decoration: underline;
 }
+
+

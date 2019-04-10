@@ -163,13 +163,13 @@ include(SHARED_PATH . '/staff-header.php'); ?>
                         <span><?php echo $pages['content']; ?></span>
                     </td>
                     <td>
-                        <a href="<?php echo url_for('staff/pages/show.php?page_name=' . chars(u($pages['menu_name'])) . '&subject_id=' . $pages['subject_id']); ?>">View</a>
+                        <a href="<?php echo url_for('staff/pages/show.php?subject=' . chars(u($subject_array['menu_name'])) . '&page=' . chars(u($pages['menu_name']))); ?>">View</a>
                     </td>
                     <td>
-                        <a href="<?php echo url_for('/staff/pages/edit.php?page_name='. chars(u($pages['menu_name'])) . '&subject_id=' . $pages['subject_id']); ?>">Edit</a>
+                        <a href="<?php echo url_for('/staff/pages/edit.php?subject=' . chars(u($subject_array['menu_name'])) . '&page=' . chars(u($pages['menu_name']))); ?>">Edit</a>
                     </td>
                     <td>
-                        <a href="<?php echo url_for('/staff/pages/delete.php?id='. $pages['id']); ?>">Delete</a>
+                        <a href="<?php echo url_for('/staff/pages/delete.php?subject=' . chars(u($subject_array['menu_name'])) . '&page=' . chars(u($pages['menu_name']))); ?>">Delete</a>
                     </td>
                 </tr>
             <?php } ?>

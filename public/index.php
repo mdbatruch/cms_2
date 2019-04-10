@@ -22,8 +22,8 @@
     $visible = !$preview;
 
 
-    if (isset($_GET['menu_name'])) {
-        $page_name = $_GET['menu_name'];
+    if (isset($_GET['page'])) {
+        $page_name = $_GET['page'];
         $page = find_all_pages_by_name($page_name, ['visible' => $visible]);
         // $page = find_all_pages_by_id($page_id);
 

@@ -42,7 +42,8 @@
                     <a href="<?php echo url_for('staff/admin/edit.php?username=' . $admin['username']); ?>"> Edit</a>
                     </p>
                     <p>
-                    <a href="<?php echo url_for('/staff/admin/delete.php?id='. $admin['id']); ?>">Delete</a>
+                    <!-- <a href="<php echo url_for('/staff/admin/delete.php?id='. $admin['id']); ?>">Delete</a> -->
+                    <a href="<?php echo url_for('/staff/admin/delete.php?username='. $admin['username']); ?>">Delete</a>
                     </p>
                 <?php  } ?>
                 </div>

@@ -2,11 +2,16 @@
 
   // Performs all actions necessary to log in an admin
   function log_in_admin($admin) {
+
+    global $db;
   // Renerating the ID protects the admin from session fixation.
     session_regenerate_id();
     $_SESSION['admin_id'] = $admin['id'];
     $_SESSION['username'] = $admin['username'];
     $_SESSION['last_login'] = time();
+
+    $login_time = date('D-M-d-Y g:i A', $_SESSION['last_login']);
+
     return true;
   }
 
@@ -29,7 +34,7 @@
 
                   redirect_to(url_for('/staff/login.php'));
 
-      } else  {
+      } else {
         $_SESSION["last_login"] = time(); // update last activity time stamp
     }
   }
@@ -38,6 +43,7 @@
 
     // return isset($_SESSION['admin_id']);
     return isset($_SESSION['username']);
+    return isset($_SESSION['last_login']);
   }
 
   function require_login() {

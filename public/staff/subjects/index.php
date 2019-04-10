@@ -6,16 +6,38 @@
 
   $subject_set = find_all_subjects();
 
-//  $subjects = [
-//    ['id' => '1', 'position' => '1', 'visible' => '1', 'menu_name' => 'About'],
-//    ['id' => '2', 'position' => '2', 'visible' => '1', 'menu_name' => 'Consumer'],
-//    ['id' => '3', 'position' => '3', 'visible' => '1', 'menu_name' => 'Small Business'],
-//    ['id' => '4', 'position' => '4', 'visible' => '1', 'menu_name' => 'Commercial'],
-//  ];
-
   $page_title = 'Subjects ';
   
-  include(SHARED_PATH . '/staff-header.php'); ?>
+  include(SHARED_PATH . '/staff-header.php');
+
+  // $subject_id = 1;
+  
+  // $sql = "SELECT * from pages ";
+  // $sql .= "WHERE subject_id='" . db_escape($db, $subject_id) . "'";
+
+  // $result = mysqli_query($db, $sql);
+  // confirm_result_set($result);
+
+  // //$test = mysqli_fetch_array($result);
+
+  // while ($test = mysqli_fetch_assoc($result)) {
+  //   echo '<pre>';
+  //   print_r($test);
+
+  //   // $sql = "DELETE from pages ";
+  //   // $sql .= "WHERE id='" . db_escape($db, $test['id']) . "'";
+
+  //   // $result = mysqli_query($db, $sql);
+  //   // confirm_result_set($result);
+
+  // }
+
+  // echo '<pre>';
+  // print_r($test);
+
+
+  
+  ?>
 
 <div id="content">
   <div class="subjects listing">
@@ -48,9 +70,10 @@
     	    <td><?php echo $subject['menu_name']; ?></td>
     	    <td><?php echo $page_count; ?></td>
 <!--          <td><a class="action" href="php echo url_for('/staff/subjects/show.php?id=' . $subject['id']); ">View</a></td>-->
-          <td><a class="action" href="<?php echo url_for('/staff/subjects/show.php?subject=' . chars(u($subject['menu_name'])) . '&position=' . chars(u($subject['position']))); ?>">View</a></td>
+          <td><a class="action" href="<?php echo url_for('/staff/subjects/show.php?subject=' . chars(u($subject['menu_name']))); ?>">View</a></td>
           <td><a class="action" href="<?php echo url_for('/staff/subjects/edit.php?subject=' . chars(u($subject['menu_name']))); ?>">Edit</a></td>
-          <td><a class="action" href="<?php echo url_for('/staff/subjects/delete.php?id=' . chars(u($subject['id'])) . '&subject=' . chars(u($subject['menu_name']))); ?>">Delete</a></td>
+          <!-- <td><a class="action" href="<php echo url_for('/staff/subjects/delete.php?id=' . chars(u($subject['id'])) . '&subject=' . chars(u($subject['menu_name']))); ?>">Delete</a></td> -->
+          <td><a class="action" href="<?php echo url_for('/staff/subjects/delete.php?subject=' . chars(u($subject['menu_name']))); ?>">Delete</a></td>
     	  </tr>
       <?php } ?>
   	</table>

@@ -7,7 +7,8 @@ require_login();
 // if(!isset($_GET['id'])) {
 //   redirect_to(url_for('/staff/subjects/index.php'));
 // }
-$id = $_GET['id'];
+
+// $id = $_GET['id'];
 
 if(!$subject = $_GET['subject']) {
   redirect_to(url_for('/staff/subjects/index.php'));
@@ -15,22 +16,27 @@ if(!$subject = $_GET['subject']) {
 
 $subject_array = find_subject_by_name($subject);
 
+// echo '<pre>';
+// print_r($subject_array);
+
 $subject_name = $subject_array['menu_name'];
 
 
 if(is_post_request()) {
-    $result = delete_subject($id);
+    $result = delete_subject($subject_array['id']);
     $_SESSION['status'] = 'you have deleted a subject';
     redirect_to(url_for('/staff/subjects/index.php'));
-} else {
-    $subject = find_subject_by_id($id);
-    // $subject_array = find_subject_by_name($subject);
-}
+} 
 
-?>
+// else {
+//     $subject = find_subject_by_id($id);
+//     // $subject_array = find_subject_by_name($subject);
+// }
+ $page_title = 'Delete Subject';
 
-<?php $page_title = 'Delete Subject'; ?>
-<?php include(SHARED_PATH . '/staff-header.php'); ?>
+ include(SHARED_PATH . '/staff-header.php');
+
+ ?>
 
 <div id="content">
 
@@ -39,9 +45,9 @@ if(is_post_request()) {
   <div class="subject delete">
     <h1>Delete Subject</h1>
     <p>Are you sure you want to delete this subject?</p>
-    <p class="item"><?php echo chars($subject['menu_name']); ?></p>
+    <p class="item"><?php echo chars($subject_array['menu_name']); ?></p>
 
-    <form action="<?php echo url_for('/staff/subjects/delete.php?id=' . chars(u($id)) . '&subject=' . chars(u($subject_name))); ?>" method="post">
+    <form action="<?php echo url_for('/staff/subjects/delete.php?subject=' . chars(u($subject_name))); ?>" method="post">
       <div id="operations">
         <input type="submit" name="commit" value="Delete Subject" />
       </div>

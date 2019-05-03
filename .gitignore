@@ -1,3 +1,7 @@
 /public/images/**
+/public/uploads/**
 /resources/node_modules/**
+/public/image-process.php
+/public/process-backup.php
+/public/staff/admin/.DS_Store
 todo.rtf

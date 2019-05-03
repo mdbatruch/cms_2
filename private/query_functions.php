@@ -261,6 +261,29 @@ ini_set('display_errors', 1);
         return $result;
     }
 
+    function subject_count() {
+
+        global $db;
+        
+        $sql = "SELECT COUNT(*) FROM subjects";
+        $result = mysqli_query($db, $sql);
+        $result_rows = mysqli_fetch_array($result)[0];
+
+        return $result_rows;
+    }
+
+    function count_all_subjects($offset, $subjects_per_page) {
+
+        global $db;
+
+        $sql = "SELECT * FROM subjects LIMIT $offset, $subjects_per_page";
+        $result = mysqli_query($db,$sql);
+        confirm_result_set($result);
+
+        return $result;
+
+    }
+
     function find_subject_by_id($id, $options=[]) {
         
         global $db;
@@ -532,6 +555,29 @@ ini_set('display_errors', 1);
             mysqli_free_result($result);
             return $pages;
         }
+
+    function page_count($subject_id) {
+
+        global $db;
+        
+        $sql = "SELECT COUNT(*) FROM pages WHERE subject_id='" . $subject_id . "'";
+        $result = mysqli_query($db, $sql);
+        $result_rows = mysqli_fetch_array($result)[0];
+
+        return $result_rows;
+    }
+
+    function count_all_pages($offset, $pages_per_page, $subject_id) {
+
+        global $db;
+
+        $sql = "SELECT * FROM pages WHERE subject_id='" . $subject_id . "'LIMIT $offset, $pages_per_page";
+        $result = mysqli_query($db,$sql);
+        confirm_result_set($result);
+
+        return $result;
+
+    }
 
     function update_page($pages){
         
@@ -806,6 +852,32 @@ ini_set('display_errors', 1);
         confirm_result_set($result);
 
         return $result;
+    }
+
+    function insert_image($imagetmp, $imagename, $username) {
+
+        global $db;
+
+        $filename = explode( '/', $imagetmp );
+        $filename = array_pop( $filename );
+        
+        $sql = "UPDATE admins SET ";
+        $sql .= "image='" . db_escape($db, $imagetmp) . "' ";
+        $sql .= "WHERE username='" . db_escape($db, $username) . "' ";
+        $sql .= "LIMIT 1";
+
+        $result = mysqli_query($db, $sql);
+
+        if($result) {
+            return true;
+        } else {
+            //if failed
+            echo mysqli_error($db);
+            db_disconnect($db);
+            exit;
+        }
+
+    
     }
 
     // function shift_subject_positions($start_pos, $end_pos, $current_id=0) {

@@ -17,54 +17,12 @@
         redirect_to(url_for('/staff/subjects/index.php'));
     }
 
-    // if(!$id = $_GET['id']) {
-    //     redirect_to(url_for('/staff/subjects/index.php'));
-    // }
-
-    // if(!$subject = $_GET['subject']) {
-    //     redirect_to(url_for('/staff/subjects/index.php'));
-    // }
-
-    // $id = 1;
-
-    // $subject = find_subject_by_id($id);
-
-    // $pages_list = find_pages_by_subject_id($id);
-
-    // echo '<pre>';
-    
-    // print_r($subject);
-
 
     $subject_array = find_subject_by_name($subject);
 
-    // echo '<pre>';
-    // print_r($subject_array);
-
     $subject_id = $subject_array['id'];
 
-    $subject_pages = find_pages_by_subject_id($subject_id);
-
-    // echo '<pre>';
-
-    // print_r($pages_list);
-
-    // echo $_SESSION['last_login'];
-
-    // $test = find_pages_by_subject_id(2);
-
-    // $tester = mysqli_fetch_all($test);
-
-    // // echo '<pre>';
-    // // print_r($tester);
-
-    // foreach ($tester as $key => $value) {
-    //     // echo $value['0'] . '<br>';
-    //     $mike = $value['0'] + 1;
-    //     // return $mike;
-    // }
-
-    // echo $mike;
+    // $subject_pages = find_pages_by_subject_id($subject_id);
 
     // $sql = "SELECT * FROM pages ";
     // $sql .= "WHERE menu_name='" . 'Ajax 1' . "'";
@@ -97,7 +55,35 @@
 // echo '<pre>';
 // print_r($page_check);
 
-include(SHARED_PATH . '/staff-header.php'); ?>
+    if (isset($_GET['page'])) {
+        $page_number = $_GET['page'];
+    } else {
+        $page_number = 1;
+    }
+
+    $pages_per_page = 4;
+    $offset = ($page_number-1) * $pages_per_page;
+
+    $page_count = page_count($subject_id);
+
+    // echo '<pre>';
+    // print_r($subject_id);
+
+    $total_pages = ceil($page_count / $pages_per_page);
+
+    $sql_pages = count_all_pages($offset, $pages_per_page, $subject_id);
+
+    if (isset($_GET['page']) && $_GET['page'] > $total_pages) {
+        redirect_to(url_for('staff/subjects/show.php?subject=' . $subject));
+    }
+
+    // $page_path =  dirname(dirname($_SERVER['HTTP_REFERER'])) . '/pages/show.php?id=' .  . '&subject_id=' . '<br/>';
+    // echo dirname($_SERVER['HTTP_REFERER']) . '/show.php?id=' . '&subject_id=' . '<br/>';
+    // echo 'http://localhost:8888/cms_2/public/staff/pages/show.php?id=29&subject_id=1';
+
+    $page_url = $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . '?subject=' . chars(u($subject));
+    include(SHARED_PATH . '/staff-header.php'); 
+?>
 
 <div id="content">
 <!--
@@ -150,7 +136,7 @@ include(SHARED_PATH . '/staff-header.php'); ?>
                 <td>Content</td>
                 <td colspan="3"></td>
             </tr>
-            <?php while($pages = mysqli_fetch_assoc($subject_pages)) { ?>
+            <?php while($pages = mysqli_fetch_assoc($sql_pages)) { ?>
                 <tr>
                     <td><?php echo $pages['id']; ?></td>
                     <td>
@@ -174,7 +160,35 @@ include(SHARED_PATH . '/staff-header.php'); ?>
                 </tr>
             <?php } ?>
             </table>
-            <?php mysqli_free_result($subject_pages); ?>
+
+            <ul class="pagination">
+                <!-- <li class="page-item"><a class="page-link" href="?page=1">First</a></li> -->
+                <li class="page-item">
+                    <?php if (!($page_number <= 1)) { ?>
+                        <a class="page-link" href="<?php echo 'http://' . $page_url . '&page=' . ($page_number - 1);  ?>">&laquo; Prev</a>
+                        <!-- <a class="page-link" href="<php if($page_number <= 1){ echo '#'; } else { echo "?page=".($page_number - 1); } ?>">&laquo; Prev</a> -->
+                    <?php } ?>
+                </li>
+                    <?php
+                        for ($i=1; $i <= $total_pages; $i++) {
+                        echo "<li class=\"page-item\" style=\"list-style:none;\">";
+                            if (!($page_number < 1)) {
+                            echo '<a class="page-link" href="'; 
+                            echo 'http://' . $page_url . "&page=" . $i . '">';
+                            echo $i . '</a>';
+                            }
+                        echo "</li>";
+                        }
+                    ?>
+                <li class="page-item">
+                    <?php if (!($page_number >= $total_pages)) { ?>
+                        <a class="page-link" href="<?php echo 'http://' . $page_url . '&page=' . ($page_number + 1);  ?>">Next &raquo;</a>
+                    <?php } ?>
+                </li>
+                <!-- <li class="page-item"><a class="page-link" href="?page=<php echo $total_pages; ?>">Last</a></li> -->
+            </ul>
+
+            <?php mysqli_free_result($sql_pages); ?>
             </div>
         </div>
     </div>

@@ -36,11 +36,13 @@
 ?>
 
         <div id="content">
+            <!-- <div class="container"> -->
             <div id="main-menu">
                 <h2>Create a New Admin</h2>
                    <!-- <form id="new-admin" action="<php echo url_for('staff/admin/new.php'); ?>" method="post"> -->
                    <div id="form-message"></div>
-                   <form id="new-admin" method="post">
+                   <form id="new-admin" method="post" enctype="multipart/form-data">
+                        <input type="hidden" id="form-id" name="new-admin" value="new-admin"/>
                         <div class="input-container">
                             <label>First Name</label>
                             <input type="text" id="firstname" name="first_name"/>
@@ -73,8 +75,22 @@
                                 <div id="password-confirm-warning"></div>
                             </div>
                         </div>
+                        <!-- <div class="input-container">
+                            <label>Add Image</label>
+                            <input type="file" id="image" name="image"/>
+                            <div id="image-warning"></div>
+                        </div> -->
                         <input type="submit"/>
-                   </form> 
+                   </form>
+                   <!-- <div id="image-upload" class="container">
+                    <form method="post" action="../../image-process.php" enctype="multipart/form-data">
+                        <label>Add Image</label>
+                        <input type="hidden" name="username" value="<php echo $_GET['username']; ?>">
+                        <input type="file" name="fileToUpload" id="fileToUpload">
+                        <input type="submit" name="submit" value="Upload Image">
+                    </form>
+                   </div> -->
+                <!-- </div> -->
             </div>
             <a class="back-link" href="<?php echo url_for('/staff/admin/index.php'); ?>">&laquo; Back to List</a>
         </div>

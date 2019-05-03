@@ -5,8 +5,6 @@
 
     $id = $_GET['id'] ?? '1';
 
-    // $pages = find_all_pages_by_id($id);
-
     $menu_name = chars($_GET['page']);
 
     $names = find_all_pages_by_name($menu_name);
@@ -14,13 +12,6 @@
     $parent = find_subject_by_id($names['subject_id']);
 
     $subject_parent = $parent['menu_name'];
-
-    // $pages = find_all_pages();
-
-//    echo '<pre>';
-//    print_r($subject_parent);
-//    print_r($names);
-//    echo '</pre>';
 
     $page_title = 'Pages Show';
 
@@ -30,7 +21,6 @@
     // echo 'http://localhost:8888/cms_2/public/staff/pages/show.php?id=29&subject_id=1';
     
     include(SHARED_PATH . '/staff-header.php');
-    
 ?>
 
  

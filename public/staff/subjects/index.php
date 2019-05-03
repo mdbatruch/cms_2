@@ -36,6 +36,31 @@
   // print_r($test);
 
 
+  if (isset($_GET['page'])) {
+      $page_number = $_GET['page'];
+  } else {
+      $page_number = 1;
+  }
+
+  $subjects_per_page = 7;
+  $offset = ($page_number-1) * $subjects_per_page; 
+
+  // $sql = "SELECT COUNT(*) FROM subjects";
+  // $result = mysqli_query($db, $sql);
+  // $result_rows = mysqli_fetch_array($result)[0];
+
+  $subject_count = subject_count();
+
+
+  $total_pages = ceil($subject_count / $subjects_per_page);
+
+
+  // $sql_subjects = "SELECT * FROM subjects LIMIT $offset, $subjects_per_page";
+  $sql_subjects = count_all_subjects($offset, $subjects_per_page);
+
+  if (isset($_GET['page']) && $_GET['page'] > $total_pages) {
+    redirect_to(url_for('staff/subjects/index.php'));
+  }
   
   ?>
 
@@ -61,7 +86,7 @@
         <th>&nbsp;</th>
   	  </tr>
 
-      <?php while($subject = mysqli_fetch_assoc($subject_set)) { ?>
+      <?php while($subject = mysqli_fetch_assoc($sql_subjects)) { ?>
       <?php $page_count = count_pages_by_subject_id($subject['id']); ?> 
         <tr>
           <td>ID: <?php echo $subject['id']; ?></td>
@@ -77,6 +102,33 @@
     	  </tr>
       <?php } ?>
   	</table>
+
+    <ul class="pagination">
+      <!-- <li class="page-item"><a class="page-link" href="?page=1">First</a></li> -->
+      <li class="page-item">
+          <?php if (!($page_number <= 1)) { ?>
+            <a class="page-link" href="<?php if($page_number <= 1){ echo '#'; } else { echo "?page=".($page_number - 1); } ?>">&laquo; Prev</a>
+          <?php } ?>
+      </li>
+        <?php
+            for ($i=1; $i <= $total_pages; $i++) {
+              echo "<li class=\"page-item\" style=\"list-style:none;\">";
+                if (!($page_number < 1)) {
+                  echo '<a class="page-link" href="'; 
+                  echo "?page=" . $i . '">';
+                  echo $i . '</a>';
+                }
+              echo "</li>";
+            }
+        ?>
+      <li class="page-item">
+          <?php if (!($page_number >= $total_pages)) { ?>
+              <a class="page-link" href="<?php if($page_number >= $total_pages){ echo '#'; } else { echo "?page=".($page_number + 1); } ?>">Next &raquo;</a>
+          <?php } ?>
+      </li>
+      <!-- <li class="page-item"><a class="page-link" href="?page=<php echo $total_pages; ?>">Last</a></li> -->
+    </ul>
+
 
     <?php
       

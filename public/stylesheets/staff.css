@@ -160,6 +160,10 @@ dd {
   padding-left: 1em;
 }
 
+#edit-admin label {
+  display: block;
+}
+
 html {
   height: 100%;
   width: 100%;
@@ -320,4 +324,8 @@ dd {
 .errors ul {
   margin-bottom: 0;
   padding-left: 1em;
+}
+
+#edit-admin label {
+  display: block;
 }

@@ -35,11 +35,11 @@ function reload() {
 }
 
 function watchStaff() {
-  browserSync.init({
-    server: {
-      baseDir: './',
-    }
-  });
+  // browserSync.init({
+  //   server: {
+  //     baseDir: './',
+  //   }
+  // });
   gulp.watch('sass/staff/*.scss', runStaffSass).on('change', browserSync.reload);
 }
 

@@ -1,2 +1,1 @@
-ALTER TABLE admins ADD image MEDIUMBLOB NOT NULL
-ALTER TABLE admins ADD image_name varchar(255) NOT NULL
+ALTER TABLE admins ADD image varchar(255) NOT NULL

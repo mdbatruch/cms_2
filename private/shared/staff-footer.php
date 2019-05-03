@@ -2,7 +2,9 @@
             &copy; <?php echo date('Y'); ?>
         </footer>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script> -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+        <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="<?php echo url_for('/js/bootstrap.js'); ?>"></script>
 
         <script type="text/javascript">
@@ -179,7 +181,6 @@ $("#edit-subject").on("submit", function(e){
 </script>
 
 <script type="text/javascript">
-        
     $("#edit-page").on("submit", function(e){
         e.preventDefault();
 
@@ -200,7 +201,9 @@ $("#edit-subject").on("submit", function(e){
                 $('#page-visible').val(0);
             }
             var page_hidden = $("#page-visible").val();
-            var page_content = $("#page-content").val();
+            var page_content = tinyMCE.get('myTextarea').getContent();
+            // var page_content = $("#tinymce").val();
+            // var page_content = $("#page-content").val();
 
             $.ajax({
                 type: "POST",
@@ -322,21 +325,33 @@ $("#edit-subject").on("submit", function(e){
                 // var password = $("#password").val();
                 // var confirm_password = $("password-confirm").val();
 
+                // var file_data = $('#image').prop('files')[0];
+
+                // formData.append('file', file_data);
+
                 var formData = {
-                    'id' : $('form').attr('id'),
+                    // 'id' : $('form').attr('id'),
+                    'id' : $("#form-id").val(),
                     'first_name' : $("#firstname").val(),
                     'last_name' : $("#lastname").val(),
                     'email' : $("#email").val(),
+                    // 'image' : $("#image").val(),
                     'username' : $("#username").val(),
                     'password' : $("#password").val(),
                     'password_confirm' : $("#password-confirm").val()
                 }
+
+                // var formData = $('#new-admin').serialize();
     
                 $.ajax({
                     type: "POST",
                     url: "../../process.php",
                     dataType: "json",
+                    // cache: false,
+                    // contentType: false,
+                    // processData: false,
                     data: formData,
+                    // data: new FormData(this),
                     // data: {name:page_name, position:page_position, visible:page_hidden, subject_id:subject_id, content:page_content, id:formId, page_id:pageId},
                 }).done(function(data){
     
@@ -383,6 +398,13 @@ $("#edit-subject").on("submit", function(e){
                         } else {
                             $('#password-confirm-warning').html('');
                         }
+
+                        if (data.errors.image) {
+                            
+                            $('#image-warning').html('<div class="alert alert-danger mt-3 input-alert-error">' + data.errors.image + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                        } else {
+                            $('#image-warning').html('');
+                        }
                     
                         $('#form-message').html('<div class="alert alert-danger">' + data.message + '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
                     
@@ -422,6 +444,7 @@ $("#edit-subject").on("submit", function(e){
                 'first_name' : $("#firstname").val(),
                 'last_name' : $("#lastname").val(),
                 'email' : $("#email").val(),
+                'image' : $("#image").val(),
                 'username' : $("#username").val(),
                 'password' : $("#password").val(),
                 'password_confirm' : $("#password-confirm").val()

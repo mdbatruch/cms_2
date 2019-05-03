@@ -30,22 +30,31 @@
                     <a href="<?php echo url_for('/staff/admin/new.php'); ?>">Create New</a>
                 </div>
 
-                <div class="container">
-                <?php while ($admin = mysqli_fetch_assoc($admins_list)) {  ?>
-                    <p><?php echo $admin['first_name']; ?> <?php echo $admin['last_name']; ?></p>
-                    <p><?php echo $admin['email']; ?></p>
-                    <p><?php echo $admin['username']; ?></p>
-                    <p>
-                    <a href="<?php echo url_for('staff/admin/show.php?username=' . $admin['username']); ?>"> View</a>
-                    </p>
-                    <p>
-                    <a href="<?php echo url_for('staff/admin/edit.php?username=' . $admin['username']); ?>"> Edit</a>
-                    </p>
-                    <p>
-                    <!-- <a href="<php echo url_for('/staff/admin/delete.php?id='. $admin['id']); ?>">Delete</a> -->
-                    <a href="<?php echo url_for('/staff/admin/delete.php?username='. $admin['username']); ?>">Delete</a>
-                    </p>
-                <?php  } ?>
+                <div class="container" style="text-align: center;">
+                    <div class="row">
+                    <?php while ($admin = mysqli_fetch_assoc($admins_list)) {  ?>
+                    <div class="col-md-3">
+                        <p>
+                            <img src="<?php echo '../../uploads/' . $admin['image']; ?>" alt="" width="200" style="border-radius: 100%;" class="img-fluid">
+                        </p>
+                        <p><?php echo $admin['first_name']; ?> <?php echo $admin['last_name']; ?></p>
+                        <p><?php echo $admin['email']; ?></p>
+                        <p><?php echo $admin['username']; ?></p>
+                        <div class="inner-container">
+                            <p>
+                            <a href="<?php echo url_for('staff/admin/show.php?username=' . $admin['username']); ?>"> View</a>
+                            </p>
+                            <p>
+                            <a href="<?php echo url_for('staff/admin/edit.php?username=' . $admin['username']); ?>"> Edit</a>
+                            </p>
+                            <p>
+                            <!-- <a href="<php echo url_for('/staff/admin/delete.php?id='. $admin['id']); ?>">Delete</a> -->
+                            <a href="<?php echo url_for('/staff/admin/delete.php?username='. $admin['username']); ?>">Delete</a>
+                            </p>
+                        </div>
+                    </div>
+                    <?php  } ?>
+                    </div>
                 </div>
             </div>
         </div>
